@@ -1,3 +1,30 @@
 <resources>
-    <string name="app_name">l_post_tracking</string>
+    <string name="app_name">Л-Пост - Найти отправление</string>
+    <string name="CC_phone"><u>8 800 700–1006</u></string>
+    <string name="findDescript">Узнайте статус и способ получения заказа службы доставки Л-Пост</string>
+    <string name="findHead">Найти заказ</string>
+    <string name="findHint">Номер заказа или трек</string>
+    <string name="findButtonCap">Найти</string>
+    <string name="find_order_DefaultError">Default Error</string>
+    <string name="lpost_label">lpost label</string>
+    <string name="clarify_phone_text">Пожалуйста, уточните номер телефона получателя этого заказа</string>
+    <string name="phone_num_hint">Номер телефона</string>
+    <string name="defaultNumOrder">№ %1$s</string>
+    <string name="order_result_header">Заказ № %1$s - %2$s</string>
+    <string name="order_state_header">Статус заказа</string>
+    <string name="delivery_plan_date_header">Планируемая дата доставки</string>
+    <string name="orderState">%1$s</string>
+    <string name="deliveryDate">%1$s \n С %2$s:00 до %3$s:00</string>
+    <string name="btnNewFind">Новый поиск</string>
+    <string name="statepng">statePng</string>
+    <string name="delivdatepng">delivDatePng</string>
+    <string name="address_header">Адрес</string>
+    <string name="address_png">address_png</string>
+    <string name="addressDescription"><u>%1$s\n%2$s</u></string>
+    <string name="payment_png">payment_png</string>
+    <string name="payment_mode">%1$s</string>
+    <string name="work_mode_png">work_mode_png</string>
+    <string name="workHours">%1$s</string>
+    <string name="workDays">%1$s</string>
+    <string name="logoimage_contentDescr">logoImage</string>
 </resources>
