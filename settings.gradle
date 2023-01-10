@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "l_post_tracking"
 include ':app'
+include ':domain'
+include ':data'

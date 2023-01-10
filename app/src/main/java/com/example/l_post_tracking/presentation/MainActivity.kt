@@ -1,7 +1,8 @@
-package com.example.l_post_tracking
+package com.example.l_post_tracking.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.l_post_tracking.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
