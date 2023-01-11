@@ -1,24 +1,32 @@
 package com.example.l_post_tracking.presentation
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.state.MainActivityFragmentState
-import ru.lpost.domain.useCase.CallCCUseCase
-import ru.lpost.domain.useCase.NewFindUseCase
+import com.example.l_post_tracking.usecase.CallCCUseCase
+import com.example.l_post_tracking.usecase.NewFindUseCase
+
 
 class MainActivity : AppCompatActivity() {
 
-    private val vm = MainViewModel(CallCCUseCase(), NewFindUseCase())
+    private val vm = MainViewModel(Application(), CallCCUseCase(), NewFindUseCase())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.btnNewFind).setOnClickListener {
-            vm.setMainActivityState(MainActivityFragmentState.FIND_BY_NUM_OR_TRACK)
+        val btnNewFind = findViewById<Button>(R.id.btnNewFind)
+        btnNewFind.visibility = View.GONE
+        btnNewFind.setOnClickListener {
+
         }
+
+        findViewById<TextView>(R.id.tvHeadCCPhone).setOnClickListener { vm.callCC() }
 
         vm.getMainActivityFragmentState().observe(this){ state ->
             when (state){

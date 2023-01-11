@@ -1,12 +1,13 @@
 package com.example.l_post_tracking.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.l_post_tracking.state.MainActivityFragmentState
-import ru.lpost.domain.useCase.CallCCUseCase
-import ru.lpost.domain.useCase.NewFindUseCase
+import com.example.l_post_tracking.usecase.CallCCUseCase
+import com.example.l_post_tracking.usecase.NewFindUseCase
 
-class MainViewModel(private val callCCUseCase: CallCCUseCase, private val newFindUseCase: NewFindUseCase): ViewModel() {
+class MainViewModel(app: Application, private val callCCUseCase: CallCCUseCase, private val newFindUseCase: NewFindUseCase): AndroidViewModel(app) {
 
     private var mainActivityFragmentState = MutableLiveData<MainActivityFragmentState>()
 
@@ -18,4 +19,7 @@ class MainViewModel(private val callCCUseCase: CallCCUseCase, private val newFin
         mainActivityFragmentState.value = state
     }
 
+    fun callCC(){
+        callCCUseCase.exec(app = getApplication())
+    }
 }
