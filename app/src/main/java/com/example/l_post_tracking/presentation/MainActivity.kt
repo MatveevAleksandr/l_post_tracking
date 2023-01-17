@@ -2,14 +2,13 @@ package com.example.l_post_tracking.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.R
-import com.example.l_post_tracking.data.repository.OrderRepositoryImpl
-import com.example.l_post_tracking.data.storage.APIOrderStorageImpl
+import com.example.l_post_tracking.repository.OrderRepositoryImpl
+import com.example.l_post_tracking.storage.APIOrderStorageImpl
 import com.example.l_post_tracking.model.MainActivityFragment
 import com.example.l_post_tracking.usecase.CallCCUseCase
 import com.example.l_post_tracking.usecase.FindByOrderOrTrackNumUseCase
