@@ -14,10 +14,10 @@ class OrderRepositoryImpl(private val storage: OrderStorage): OrderRepository {
     }
     
     private fun convertFindDataModelToFindOrderStorageModel(fdm: FindDataModel): FindOrderStorageModel {
-        return FindOrderStorageModel(orderOrTrackNum = fdm.orderOrTrackNum, phoneNum = fdm.phoneNum)
+        return FindOrderStorageModel(trackNumber = fdm.orderOrTrackNum, phoneNumber = fdm.phoneNum)
     }
 
     private fun convertResultOrderStorageModelToFindResultModel(storageResult: ResultOrderStorageModel): FindResultModel{
-        return FindResultModel(httpCode = storageResult.httpCode)
+        return FindResultModel(customerNumber = storageResult.customerNumber)
     }
 }

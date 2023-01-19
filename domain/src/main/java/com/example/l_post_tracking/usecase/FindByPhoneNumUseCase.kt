@@ -6,6 +6,6 @@ import com.example.l_post_tracking.repository.OrderRepository
 
 class FindByPhoneNumUseCase(orderRepository: OrderRepository) {
     fun exec(findDataModel: FindDataModel): FindResultModel {
-        return FindResultModel(httpCode = 0)
+        return FindResultModel(customerNumber = null)
     }
 }
