@@ -17,7 +17,6 @@ import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-
     private val callCCUseCase = CallCCUseCase(this)
     private val apiOrderStorage = APIOrderStorageImpl()
     private val orderRepository = OrderRepositoryImpl(storage =  apiOrderStorage)

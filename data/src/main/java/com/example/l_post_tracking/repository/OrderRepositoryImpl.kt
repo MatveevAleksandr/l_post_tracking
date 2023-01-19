@@ -9,7 +9,7 @@ import com.example.l_post_tracking.model.FindResultModel
 class OrderRepositoryImpl(private val storage: OrderStorage): OrderRepository {
     override fun loadOrder(findDataModel: FindDataModel): FindResultModel {
         val findOrderStorageModel = convertFindDataModelToFindOrderStorageModel(findDataModel)
-        val resultOrderStorageModel = storage.loadOrder(findOrderStorageModel)
+        val resultOrderStorageModel = storage.loadOrderInfo(findOrderStorageModel)
         return convertResultOrderStorageModelToFindResultModel(resultOrderStorageModel)
     }
     

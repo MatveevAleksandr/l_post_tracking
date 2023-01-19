@@ -4,5 +4,5 @@ import com.example.l_post_tracking.model.FindOrderStorageModel
 import com.example.l_post_tracking.model.ResultOrderStorageModel
 
 interface OrderStorage {
-    fun loadOrder(findOrderStorageModel: FindOrderStorageModel): ResultOrderStorageModel
+    fun loadOrderInfo(findOrderStorageModel: FindOrderStorageModel): ResultOrderStorageModel
 }
