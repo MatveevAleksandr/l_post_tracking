@@ -1,6 +1,6 @@
 package com.example.l_post_tracking.model
 
-data class FindOrderStorageModel(
+data class OrderStorageFindDataModel(
     val trackNumber: String,
-    val phoneNumber: String?
+    val phoneNumber: String
 )

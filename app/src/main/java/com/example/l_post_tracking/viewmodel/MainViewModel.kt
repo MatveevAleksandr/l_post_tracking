@@ -4,7 +4,7 @@ package com.example.l_post_tracking.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.l_post_tracking.model.FindDataModel
+import com.example.l_post_tracking.model.AppFindOrderDataModel
 import com.example.l_post_tracking.model.MainActivityFragment
 import com.example.l_post_tracking.model.MainActivityFragmentStateModel
 import com.example.l_post_tracking.usecase.CallCCUseCase
@@ -71,16 +71,43 @@ class MainViewModel(
             )
         )
 
-        val findDataModel = FindDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
+//        val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
+        val appFindOrderDataModel =
+            AppFindOrderDataModel(orderOrTrackNum = "2206/230P", phoneNum = null)
+
         coroutineScope.launch(Dispatchers.IO) {
-            findByOrderOrTrackNumUseCase.exec(findDataModel)
+            val findByOrderOrTrackNumResult =
+                findByOrderOrTrackNumUseCase.exec(appFindOrderDataModel)
+
+
             withContext(Dispatchers.Main) {
-                setMainActivityState(
-                    MainActivityFragmentStateModel(
-                        mainActivityFragment = MainActivityFragment.RESULT,
-                        errorMsg = null
-                    )
-                )
+                when (findByOrderOrTrackNumResult.errorFromJson) {
+                    "3" -> {
+                        setMainActivityState(
+                            MainActivityFragmentStateModel(
+                                mainActivityFragment = MainActivityFragment.FIND_BY_NUM_OR_TRACK,
+                                errorMsg = "Заказ не найден. Уточните номер заказа и попробуйте снова, или свяжитесь с поддержкой\n" +
+                                        "8 800 700-1006"
+                            )
+                        )
+                    }
+                    "2" -> {
+                        setMainActivityState(
+                            MainActivityFragmentStateModel(
+                                mainActivityFragment = MainActivityFragment.FIND_BY_PHONE,
+                                errorMsg = null
+                            )
+                        )
+                    }
+                    else -> {
+                        setMainActivityState(
+                            MainActivityFragmentStateModel(
+                                mainActivityFragment = MainActivityFragment.RESULT,
+                                errorMsg = null
+                            )
+                        )
+                    }
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.example.l_post_tracking.storage
 
-import com.example.l_post_tracking.model.FindOrderStorageModel
-import com.example.l_post_tracking.model.ResultOrderStorageModel
+import com.example.l_post_tracking.model.OrderStorageFindDataModel
+import com.example.l_post_tracking.model.OrderStorageFindResultModel
 
 interface OrderStorage {
-    fun loadOrderInfo(findOrderStorageModel: FindOrderStorageModel): ResultOrderStorageModel
+    fun loadOrderInfo(orderStorageFindDataModel: OrderStorageFindDataModel): OrderStorageFindResultModel
 }

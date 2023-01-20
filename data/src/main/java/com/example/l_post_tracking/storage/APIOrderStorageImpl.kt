@@ -1,11 +1,8 @@
 package com.example.l_post_tracking.storage
 
 import android.util.Log
-import com.example.l_post_tracking.model.FindOrderStorageModel
-import com.example.l_post_tracking.model.ResultOrderStorageModel
+import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.retrofit.APIOrderStorageRetrofit
-import com.google.gson.GsonBuilder
-import okhttp3.Headers
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,21 +19,33 @@ class APIOrderStorageImpl() : OrderStorage {
         .build()
         .create<APIOrderStorageRetrofit>()
 
+    override fun loadOrderInfo(orderStorageFindDataModel: OrderStorageFindDataModel): OrderStorageFindResultModel {
+        val apiFindData =
+            convertOrderStorageFindDataModelToAPIOrderStorageFindDataModel(orderStorageFindDataModel)
+        val requestBody = APIOrderStorageFindDataJSONModel(orderTracking = apiFindData)
 
-    override fun loadOrderInfo(findOrderStorageModel: FindOrderStorageModel): ResultOrderStorageModel {
+        val response = orderRequestAPI.getOrderInfo(requestBody).execute()
 
+        val apiOrderStorageFindResultModel =
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
+                APIOrderStorageFindResultModel(httpResponseCode = response.code())
+            }
 
-//        val body = FindOrderStorageModel(trackNumber = "64637", phoneNumber = "")
+        Log.e("AAA_AAA", apiOrderStorageFindResultModel.toString())
 
-//            "{\"OrderTracking\":{\"trackNumber\":\"64637\",\"phoneNumber\":\"\"}}"
+        return convertAPIOrderStorageFindResultModelToOrderStorageFindResultModel(apiOrderStorageFindResultModel)
+    }
 
-        val body = JSONObject("{\"OrderTracking\":{\"trackNumber\":\"64637\",\"phoneNumber\":\"\"}}")
+    private fun convertOrderStorageFindDataModelToAPIOrderStorageFindDataModel(fdm: OrderStorageFindDataModel): APIOrderStorageFindDataModel {
+        return APIOrderStorageFindDataModel(
+            trackNumber = fdm.trackNumber,
+            phoneNumber = fdm.phoneNumber
+        )
+    }
 
-        Log.e("AAA_AAA", body.toString())
-
-        Log.e("AAA_AAA", orderRequestAPI.getOrderInfo(body).execute().body().toString())
-
-
-        return ResultOrderStorageModel(null, null, null, null, null, null, null, null)
+    private fun convertAPIOrderStorageFindResultModelToOrderStorageFindResultModel(frm: APIOrderStorageFindResultModel): OrderStorageFindResultModel {
+        return OrderStorageFindResultModel(customerNumber = frm.message, errorFromJson = frm.error)
     }
 }

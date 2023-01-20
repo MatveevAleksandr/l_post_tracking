@@ -1,23 +1,23 @@
 package com.example.l_post_tracking.repository
 
-import com.example.l_post_tracking.model.FindOrderStorageModel
-import com.example.l_post_tracking.model.ResultOrderStorageModel
+import com.example.l_post_tracking.model.OrderStorageFindDataModel
+import com.example.l_post_tracking.model.OrderStorageFindResultModel
 import com.example.l_post_tracking.storage.OrderStorage
-import com.example.l_post_tracking.model.FindDataModel
-import com.example.l_post_tracking.model.FindResultModel
+import com.example.l_post_tracking.model.AppFindOrderDataModel
+import com.example.l_post_tracking.model.AppFindOrderResultModel
 
 class OrderRepositoryImpl(private val storage: OrderStorage): OrderRepository {
-    override fun loadOrder(findDataModel: FindDataModel): FindResultModel {
-        val findOrderStorageModel = convertFindDataModelToFindOrderStorageModel(findDataModel)
+    override fun loadOrder(appFindOrderDataModel: AppFindOrderDataModel): AppFindOrderResultModel {
+        val findOrderStorageModel = convertAppFindDataModelToStorageFindDataModel(appFindOrderDataModel)
         val resultOrderStorageModel = storage.loadOrderInfo(findOrderStorageModel)
-        return convertResultOrderStorageModelToFindResultModel(resultOrderStorageModel)
+        return convertStorageFindResultModelToAppFindResultModel(resultOrderStorageModel)
     }
     
-    private fun convertFindDataModelToFindOrderStorageModel(fdm: FindDataModel): FindOrderStorageModel {
-        return FindOrderStorageModel(trackNumber = fdm.orderOrTrackNum, phoneNumber = fdm.phoneNum)
+    private fun convertAppFindDataModelToStorageFindDataModel(fdm: AppFindOrderDataModel): OrderStorageFindDataModel {
+        return OrderStorageFindDataModel(trackNumber = fdm.orderOrTrackNum, phoneNumber = fdm.phoneNum?:"")
     }
 
-    private fun convertResultOrderStorageModelToFindResultModel(storageResult: ResultOrderStorageModel): FindResultModel{
-        return FindResultModel(customerNumber = storageResult.customerNumber)
+    private fun convertStorageFindResultModelToAppFindResultModel(storageResult: OrderStorageFindResultModel): AppFindOrderResultModel{
+        return AppFindOrderResultModel(customerNumber = storageResult.customerNumber, errorFromJson = storageResult.errorFromJson)
     }
 }
