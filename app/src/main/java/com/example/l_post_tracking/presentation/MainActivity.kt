@@ -7,9 +7,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.R
+import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.repository.OrderRepositoryImpl
 import com.example.l_post_tracking.storage.APIOrderStorageImpl
-import com.example.l_post_tracking.model.MainActivityFragment
 import com.example.l_post_tracking.usecase.CallCCUseCase
 import com.example.l_post_tracking.usecase.FindByOrderOrTrackNumUseCase
 import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
@@ -43,23 +43,23 @@ class MainActivity : AppCompatActivity() {
 
         vm.getMainActivityFragmentState().observe(this) { mainActivityFragmentState ->
             btnNewFind.visibility = View.GONE
-            when (mainActivityFragmentState.mainActivityFragment) {
-                MainActivityFragment.FIND_BY_NUM_OR_TRACK -> {
+            when (mainActivityFragmentState) {
+                is FindByNumOrTrackMainActivityState -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.MainLayoutCenter, FindByNumOrTrackFragment(vm = vm))
                         .commitNow()
                 }
-                MainActivityFragment.FIND_BY_PHONE -> {
+                is FindByPhoneMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.MainLayoutCenter, FindByPhoneFragment(vm = vm)).commitNow()
                 }
-                MainActivityFragment.WAITING -> {
+                is WaitingMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.MainLayoutCenter, WaitingFragment()).commitNow()
                 }
-                MainActivityFragment.RESULT -> {
+                is ResultMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.MainLayoutCenter, SearchResultFragment()).commitNow()

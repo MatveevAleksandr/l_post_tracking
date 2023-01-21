@@ -1,9 +1,6 @@
 package com.example.l_post_tracking.model
 
-data class OrderStorageFindResultModel(
-    val isDataLoaded: Boolean = false,
-    val errorMessage: String? = null,
-    val isNeedAddPhoneNum: Boolean = false,
+data class AppFindOrderResultDataModel(
     val customerNumber: String? = null,
     val orderNumber: String? = null,
     val orderType: Int? = null,
