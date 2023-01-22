@@ -1,7 +1,6 @@
 package com.example.l_post_tracking.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.viewmodel.MainViewModel
-import kotlinx.coroutines.*
 
-class FindByNumOrTrackFragment(private val vm: MainViewModel) : Fragment() {
+class FindByNumOrTrackFragment(
+    private val vm: MainViewModel, private val errMessage: String? = null
+) : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_find_order_by_number, container, false)
     }
@@ -32,12 +30,10 @@ class FindByNumOrTrackFragment(private val vm: MainViewModel) : Fragment() {
             vm.findByOrderOrTrackNumClick(findStr)
         }
 
-        vm.getMainActivityFragmentState().observe(viewLifecycleOwner) { mainActivityFragmentState ->
-            if (!mainActivityFragmentState.errorMsg.isNullOrEmpty()) {
-                val errLabel = view.findViewById<TextView>(R.id.errMess_NumberFrg)
-                errLabel.text = mainActivityFragmentState.errorMsg
-                errLabel.visibility = View.VISIBLE
-            }
+        if (!errMessage.isNullOrEmpty()) {
+            val errLabel = view.findViewById<TextView>(R.id.errMess_NumberFrg)
+            errLabel.text = errMessage
+            errLabel.visibility = View.VISIBLE
         }
     }
 }

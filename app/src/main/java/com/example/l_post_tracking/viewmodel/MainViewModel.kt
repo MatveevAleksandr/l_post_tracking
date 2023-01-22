@@ -18,7 +18,7 @@ class MainViewModel(
 
     private var mainActivityState = MutableLiveData<MainActivityState>()
 
-    private val coroutineJob = Job()
+    private var coroutineJob: Job = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineJob)
 
     init {
@@ -34,10 +34,16 @@ class MainViewModel(
     }
 
     fun callCCClick() {
+        if (coroutineJob.isActive) {
+            coroutineJob.cancel()
+        }
         callCCUseCase.exec()
     }
 
     fun newSearchClick() {
+        if (coroutineJob.isActive) {
+            coroutineJob.cancel()
+        }
         setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = null))
     }
 
@@ -49,11 +55,11 @@ class MainViewModel(
 
         setMainActivityState(WaitingMainActivityState)
 
-//        val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
-        val appFindOrderDataModel =
-            AppFindOrderDataModel(orderOrTrackNum = "2206/230P", phoneNum = null)
+//       val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
+         val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = "2206/230P", phoneNum = null)
 
-        coroutineScope.launch(Dispatchers.IO) {
+        coroutineJob = coroutineScope.launch(Dispatchers.IO) {
+
             val findByOrderOrTrackNumResult =
                 findByOrderOrTrackNumUseCase.exec(appFindOrderDataModel)
 
@@ -67,8 +73,7 @@ class MainViewModel(
                     }
                     is NeedAddPhoneNumberForSearch -> {
                         FindByPhoneMainActivityState(
-                            orderNum = orderOrTrackNum,
-                            errorMsg = null
+                            orderNum = orderOrTrackNum, errorMsg = null
                         )
                     }
                 }

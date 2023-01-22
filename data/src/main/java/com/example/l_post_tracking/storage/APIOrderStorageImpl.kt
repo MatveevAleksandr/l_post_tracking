@@ -3,7 +3,7 @@ package com.example.l_post_tracking.storage
 import android.util.Log
 import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.retrofit.APIOrderStorageRetrofit
-import org.json.JSONObject
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -25,32 +25,17 @@ class APIOrderStorageImpl() : OrderStorage {
 
         val orderStorageFindResultModel = try {
             val response = orderRequestAPI.getOrderInfo(requestBody).execute()
-
-            val apiOrderStorageFindResultModel = if (response.isSuccessful) {
-                response.body()!!
-            } else {
-                APIOrderStorageFindResultModel(httpResponseCode = response.code())
-            }
-
-            Log.e("AAA_AAA", apiOrderStorageFindResultModel.toString())
-
-            convertAPIOrderStorageFindResultModelToOrderStorageFindResultModel(
-                apiOrderStorageFindResultModel
-            )
+            convertAPIResponseToOrderStorageFindResultModel(response)
         } catch (e: IOException) {
             OrderStorageFindResultModel(
-                isDataLoaded = false,
-                isNeedAddPhoneNum = false,
-                errorMessage = "Ошибка обращения к серверу"
+                isDataLoaded = false, isNeedAddPhoneNum = false, errorMessage = e.message
             )
         } catch (e: RuntimeException) {
             OrderStorageFindResultModel(
-                isDataLoaded = false,
-                isNeedAddPhoneNum = false,
-                errorMessage = "Ошибка обращения к серверу"
+                isDataLoaded = false, isNeedAddPhoneNum = false, errorMessage = e.message
             )
         }
-
+        Log.e("AAA_AAA", orderStorageFindResultModel.toString())
         return orderStorageFindResultModel
     }
 
@@ -60,7 +45,48 @@ class APIOrderStorageImpl() : OrderStorage {
         )
     }
 
-    private fun convertAPIOrderStorageFindResultModelToOrderStorageFindResultModel(frm: APIOrderStorageFindResultModel): OrderStorageFindResultModel {
-        return OrderStorageFindResultModel()
+    private fun convertAPIResponseToOrderStorageFindResultModel(apiResponse: Response<APIOrderStorageFindResultModel>): OrderStorageFindResultModel {
+        return if (!apiResponse.isSuccessful) {
+            OrderStorageFindResultModel(
+                isDataLoaded = false,
+                isNeedAddPhoneNum = false,
+                errorMessage = apiResponse.errorBody().toString()
+            )
+        } else {
+            when (apiResponse.body()!!.error) {
+                "" -> {
+                    val bodyData = apiResponse.body()!!.data
+                    OrderStorageFindResultModel(
+                        isDataLoaded = true,
+                        isNeedAddPhoneNum = false,
+                        customerNumber = bodyData?.customerNumber,
+                        orderNumber = bodyData?.orderNumber,
+                        orderType = bodyData?.orderType?.toInt(),
+                        statusDescription = bodyData?.statusDescription,
+                        deliveryDatePlan = bodyData?.deliveryDatePlan,
+                        timeFrom = bodyData?.timeFrom,
+                        timeTo = bodyData?.timeTo,
+                        isCourier = bodyData?.isCourier
+                    )
+                }
+                "2" -> {
+                    OrderStorageFindResultModel(isDataLoaded = false, isNeedAddPhoneNum = true)
+                }
+                "3" -> {
+                    OrderStorageFindResultModel(
+                        isDataLoaded = false,
+                        isNeedAddPhoneNum = false,
+                        errorMessage = "Заказ не найден. Проверьте номер телефона и попробуйте снова, или свяжитесь с поддержкой 8 800 700-1006"
+                    )
+                }
+                else -> {
+                    OrderStorageFindResultModel(
+                        isDataLoaded = false,
+                        isNeedAddPhoneNum = false,
+                        errorMessage = "Системная ошибка. Пожалуйста свяжитесь с поддержкой 8 800 700-1006"
+                    )
+                }
+            }
+        }
     }
 }

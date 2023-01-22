@@ -19,8 +19,9 @@ import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 class MainActivity : AppCompatActivity() {
     private val callCCUseCase = CallCCUseCase(this)
     private val apiOrderStorage = APIOrderStorageImpl()
-    private val orderRepository = OrderRepositoryImpl(storage =  apiOrderStorage)
-    private val findByOrderOrTrackNumUseCase = FindByOrderOrTrackNumUseCase(orderRepository = orderRepository)
+    private val orderRepository = OrderRepositoryImpl(storage = apiOrderStorage)
+    private val findByOrderOrTrackNumUseCase =
+        FindByOrderOrTrackNumUseCase(orderRepository = orderRepository)
     private val findByPhoneNumUseCase = FindByPhoneNumUseCase(orderRepository = orderRepository)
     private lateinit var vm: MainViewModel
 
@@ -45,14 +46,19 @@ class MainActivity : AppCompatActivity() {
             btnNewFind.visibility = View.GONE
             when (mainActivityFragmentState) {
                 is FindByNumOrTrackMainActivityState -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.MainLayoutCenter, FindByNumOrTrackFragment(vm = vm))
-                        .commitNow()
+                    supportFragmentManager.beginTransaction().replace(
+                            R.id.MainLayoutCenter, FindByNumOrTrackFragment(
+                                vm = vm, errMessage = mainActivityFragmentState.errorMsg
+                            )
+                        ).commitNow()
                 }
                 is FindByPhoneMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.MainLayoutCenter, FindByPhoneFragment(vm = vm)).commitNow()
+                    supportFragmentManager.beginTransaction().replace(
+                            R.id.MainLayoutCenter, FindByPhoneFragment(
+                                vm = vm, errMessage = mainActivityFragmentState.errorMsg
+                            )
+                        ).commitNow()
                 }
                 is WaitingMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
