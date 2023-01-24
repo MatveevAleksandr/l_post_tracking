@@ -4,6 +4,9 @@ package com.example.l_post_tracking.presentation
 TODO
     hilt
     Compose
-    convertAPIOrderStorageFindResultModelToOrderStorageFindResultModel - логику преобразования
-        модели апи хранилища в общую модель хранилища
+    убрать системные ошибки из кечей
+    оплата наличными или картой не помещается
+    дизайн переделать
+    расписание работы пункта
+    починить переворот
  */

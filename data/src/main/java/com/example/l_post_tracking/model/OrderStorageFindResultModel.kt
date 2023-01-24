@@ -9,7 +9,11 @@ data class OrderStorageFindResultModel(
     val orderType: Int? = null,
     val statusDescription: String? = null,
     val deliveryDatePlan: String? = null,
+    val pvzAddress: String? = null,
+    val pvzAddressDop: String? = null,
     val timeFrom: String? = null,
     val timeTo: String? = null,
-    val isCourier: Boolean? = null
+    val isCourier: Boolean? = null,
+    val canPayCard: Boolean? = null,
+    val canPayCash: Boolean? = null
 )

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.usecase.CallCCUseCase
+import com.example.l_post_tracking.usecase.FindAddressInMapUseCase
 import com.example.l_post_tracking.usecase.FindByOrderOrTrackNumUseCase
 import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
 import kotlinx.coroutines.*
@@ -12,6 +13,7 @@ import kotlinx.coroutines.*
 
 class MainViewModel(
     private val callCCUseCase: CallCCUseCase,
+    private val findAddressInMapUseCase: FindAddressInMapUseCase,
     private val findByOrderOrTrackNumUseCase: FindByOrderOrTrackNumUseCase,
     private val findByPhoneNumUseCase: FindByPhoneNumUseCase
 ) : ViewModel() {
@@ -34,14 +36,18 @@ class MainViewModel(
     }
 
     fun callCCClick() {
-        if (coroutineJob.isActive) {
+        if (!coroutineJob.isCancelled) {
             coroutineJob.cancel()
         }
         callCCUseCase.exec()
     }
 
+    fun addressClick(address: String) {
+        findAddressInMapUseCase.exec(address = address)
+    }
+
     fun newSearchClick() {
-        if (coroutineJob.isActive) {
+        if (!coroutineJob.isCancelled) {
             coroutineJob.cancel()
         }
         setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = null))
@@ -52,14 +58,13 @@ class MainViewModel(
             setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = "Введите номер или трек-номер отправления"))
             return
         }
-
         setMainActivityState(WaitingMainActivityState)
-
-//       val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
-         val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = "2206/230P", phoneNum = null)
-
+        val appFindOrderDataModel =
+            AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
+        //  val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = "2206/230P", phoneNum = null)  // курьерка
+//                      val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = "123-0120-7815", phoneNum = null)       // самовывоз
+        //                                  val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = "22", phoneNum = null)       // уточнение тел
         coroutineJob = coroutineScope.launch(Dispatchers.IO) {
-
             val findByOrderOrTrackNumResult =
                 findByOrderOrTrackNumUseCase.exec(appFindOrderDataModel)
 
@@ -80,5 +85,54 @@ class MainViewModel(
                 setMainActivityState(stateModel)
             }
         }
+    }
+
+    fun findByPhoneNumClick(orderOrTrackNum: String, _phoneNum: String){
+        val phoneNum = reformatPhoneNumber(_phoneNumber = _phoneNum)
+        if (phoneNum.isEmpty()) {
+            setMainActivityState(FindByPhoneMainActivityState(orderNum = orderOrTrackNum, errorMsg = "Введите номер телефона"))
+            return
+        }
+        if (orderOrTrackNum.isEmpty()) {
+            setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = "Введите номер или трек-номер отправления"))
+            return
+        }
+        setMainActivityState(WaitingMainActivityState)
+        val appFindOrderDataModel =
+            AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = phoneNum)
+
+        coroutineJob = coroutineScope.launch(Dispatchers.IO) {
+            val findByPhoneNumResult =
+                findByPhoneNumUseCase.exec(appFindOrderDataModel)
+            withContext(Dispatchers.Main) {
+                val stateModel = when (findByPhoneNumResult) {
+                    is DataLoaded -> {
+                        ResultMainActivityState(orderData = findByPhoneNumResult.data)
+                    }
+                    is GetError -> {
+                        FindByPhoneMainActivityState(orderNum = orderOrTrackNum, errorMsg = findByPhoneNumResult.errMessage)
+                    }
+                    is NeedAddPhoneNumberForSearch -> {
+                        FindByPhoneMainActivityState(
+                            orderNum = orderOrTrackNum, errorMsg = null
+                        )
+                    }
+                }
+                setMainActivityState(stateModel)
+            }
+        }
+    }
+
+    /**
+     * Привести номер телефона к читаемому формату для запросов
+     */
+    private fun reformatPhoneNumber(_phoneNumber: String): String{
+        var phoneNumber: String = _phoneNumber.replace(" ","", true).replace("-","", true)
+        phoneNumber = when {
+            (phoneNumber.length < 11 ) -> "+7$phoneNumber"
+            (phoneNumber.length == 11 ) -> "+7${phoneNumber.substring(1)}"
+            else -> phoneNumber
+        }
+        return phoneNumber
     }
 }

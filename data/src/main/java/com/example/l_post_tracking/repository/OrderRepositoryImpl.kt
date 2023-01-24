@@ -27,7 +27,11 @@ class OrderRepositoryImpl(private val storage: OrderStorage) : OrderRepository {
                 deliveryDatePlan = storageResult.deliveryDatePlan,
                 timeFrom = storageResult.timeFrom,
                 timeTo = storageResult.timeTo,
-                isCourier = storageResult.isCourier
+                isCourier = storageResult.isCourier ?: false,
+                canPayCash = storageResult.canPayCash ?: false,
+                canPayCard = storageResult.canPayCard ?: false,
+                pvzAddress = storageResult.pvzAddress,
+                pvzAddressDop = storageResult.pvzAddressDop
             )
             DataLoaded(data = data)
         } else if (storageResult.isNeedAddPhoneNum) {

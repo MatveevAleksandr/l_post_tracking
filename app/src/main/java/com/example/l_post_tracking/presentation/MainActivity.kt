@@ -11,13 +11,15 @@ import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.repository.OrderRepositoryImpl
 import com.example.l_post_tracking.storage.APIOrderStorageImpl
 import com.example.l_post_tracking.usecase.CallCCUseCase
+import com.example.l_post_tracking.usecase.FindAddressInMapUseCase
 import com.example.l_post_tracking.usecase.FindByOrderOrTrackNumUseCase
 import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-    private val callCCUseCase = CallCCUseCase(this)
+    private val callCCUseCase = CallCCUseCase(context = this)
+    private val findAddressInMapUseCase = FindAddressInMapUseCase(context = this)
     private val apiOrderStorage = APIOrderStorageImpl()
     private val orderRepository = OrderRepositoryImpl(storage = apiOrderStorage)
     private val findByOrderOrTrackNumUseCase =
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         vm = ViewModelProvider(
             this, MainViewModelFactory(
                 callCCUseCase = callCCUseCase,
+                findAddressInMapUseCase = findAddressInMapUseCase,
                 findByOrderOrTrackNumUseCase = findByOrderOrTrackNumUseCase,
                 findByPhoneNumUseCase = findByPhoneNumUseCase
             )
@@ -46,19 +49,17 @@ class MainActivity : AppCompatActivity() {
             btnNewFind.visibility = View.GONE
             when (mainActivityFragmentState) {
                 is FindByNumOrTrackMainActivityState -> {
-                    supportFragmentManager.beginTransaction().replace(
-                            R.id.MainLayoutCenter, FindByNumOrTrackFragment(
-                                vm = vm, errMessage = mainActivityFragmentState.errorMsg
-                            )
-                        ).commitNow()
+                    val frg = FindByNumOrTrackFragment()
+                    frg.attachViewModel(_vm = vm)
+                    supportFragmentManager.beginTransaction().replace(R.id.MainLayoutCenter, frg)
+                        .commitNow()
                 }
                 is FindByPhoneMainActivityState -> {
+                    val frg = FindByPhoneFragment()
+                    frg.attachViewModel(_vm = vm)
                     btnNewFind.visibility = View.VISIBLE
-                    supportFragmentManager.beginTransaction().replace(
-                            R.id.MainLayoutCenter, FindByPhoneFragment(
-                                vm = vm, errMessage = mainActivityFragmentState.errorMsg
-                            )
-                        ).commitNow()
+                    supportFragmentManager.beginTransaction().replace(R.id.MainLayoutCenter, frg)
+                        .commitNow()
                 }
                 is WaitingMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
@@ -66,9 +67,11 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.MainLayoutCenter, WaitingFragment()).commitNow()
                 }
                 is ResultMainActivityState -> {
+                    val frg = FindByPhoneFragment()
+                    frg.attachViewModel(_vm = vm)
                     btnNewFind.visibility = View.VISIBLE
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.MainLayoutCenter, SearchResultFragment()).commitNow()
+                    supportFragmentManager.beginTransaction().replace(R.id.MainLayoutCenter, frg)
+                        .commitNow()
                 }
             }
         }

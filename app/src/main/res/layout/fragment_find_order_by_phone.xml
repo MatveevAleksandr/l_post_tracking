@@ -48,5 +48,5 @@
         android:layout_height="wrap_content"
         android:text="@string/findButtonCap"
         android:layout_marginTop="10dp"
-        android:id="@+id/BtnFindClarifyPhone"/>
+        android:id="@+id/btnFindClarifyPhone"/>
 </LinearLayout>

@@ -1,8 +1,15 @@
 package com.example.l_post_tracking.storage
 
+import android.util.JsonReader
 import android.util.Log
 import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.retrofit.APIOrderStorageRetrofit
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONTokener
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -35,7 +42,6 @@ class APIOrderStorageImpl() : OrderStorage {
                 isDataLoaded = false, isNeedAddPhoneNum = false, errorMessage = e.message
             )
         }
-        Log.e("AAA_AAA", orderStorageFindResultModel.toString())
         return orderStorageFindResultModel
     }
 
@@ -46,6 +52,31 @@ class APIOrderStorageImpl() : OrderStorage {
     }
 
     private fun convertAPIResponseToOrderStorageFindResultModel(apiResponse: Response<APIOrderStorageFindResultModel>): OrderStorageFindResultModel {
+        /**
+         * т.к. в data из ответа в виду кривого апи может прийти как объект {}, так и массив [], так и другая вложенность,
+         * то data надо обрабатывать по условиям. Как только исправится формат ответа, то тип поля data просто меняется с Any на APIOrderStorageFindResultDataModel
+         */
+        val data = Gson().toJsonTree(apiResponse.body()?.data)
+        val dataModel = if (data.isJsonObject) {
+            val dataJsonObj = data.asJsonObject
+//            всё из trackingData и pickupData надо вынести на уровень выше
+            if (dataJsonObj.get("trackingData") != null) dataJsonObj.get("trackingData").asJsonObject.entrySet()
+                .forEach {
+                    dataJsonObj.add(it.key, it.value)
+                }
+            if (dataJsonObj.get("pickupData") != null) dataJsonObj.get("pickupData").asJsonObject.entrySet()
+                .forEach {
+                    dataJsonObj.add(it.key, it.value)
+                }
+            dataJsonObj.remove("trackingData")
+            dataJsonObj.remove("pickupData")
+            Gson().fromJson(
+                dataJsonObj.get("trackingData") ?: dataJsonObj,
+                APIOrderStorageFindResultDataModel::class.java
+            )
+        } else APIOrderStorageFindResultDataModel()
+
+
         return if (!apiResponse.isSuccessful) {
             OrderStorageFindResultModel(
                 isDataLoaded = false,
@@ -55,19 +86,23 @@ class APIOrderStorageImpl() : OrderStorage {
         } else {
             when (apiResponse.body()!!.error) {
                 "" -> {
-                    val bodyData = apiResponse.body()!!.data
                     OrderStorageFindResultModel(
                         isDataLoaded = true,
                         isNeedAddPhoneNum = false,
-                        customerNumber = bodyData?.customerNumber,
-                        orderNumber = bodyData?.orderNumber,
-                        orderType = bodyData?.orderType?.toInt(),
-                        statusDescription = bodyData?.statusDescription,
-                        deliveryDatePlan = bodyData?.deliveryDatePlan,
-                        timeFrom = bodyData?.timeFrom,
-                        timeTo = bodyData?.timeTo,
-                        isCourier = bodyData?.isCourier
+                        customerNumber = dataModel?.customerNumber,
+                        orderNumber = dataModel?.orderNumber,
+                        orderType = dataModel?.orderType?.toInt(),
+                        statusDescription = dataModel?.statusDescription,
+                        deliveryDatePlan = dataModel?.deliveryDatePlan,
+                        timeFrom = dataModel?.timeFrom,
+                        timeTo = dataModel?.timeTo,
+                        isCourier = dataModel?.isCourier == "1",
+                        canPayCard = dataModel?.canPayCard == 1,
+                        canPayCash = dataModel?.canPayCash == 1,
+                        pvzAddress = dataModel?.pvzAddress,
+                        pvzAddressDop = dataModel?.pvzAddressDop
                     )
+
                 }
                 "2" -> {
                     OrderStorageFindResultModel(isDataLoaded = false, isNeedAddPhoneNum = true)
