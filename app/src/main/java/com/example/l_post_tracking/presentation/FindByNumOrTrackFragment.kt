@@ -1,5 +1,6 @@
 package com.example.l_post_tracking.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,9 @@ import com.example.l_post_tracking.R
 import com.example.l_post_tracking.model.FindByNumOrTrackMainActivityState
 import com.example.l_post_tracking.viewmodel.MainViewModel
 
-class FindByNumOrTrackFragment(
-) : Fragment() {
+class FindByNumOrTrackFragment : Fragment() {
 
-    private var viewModel: MainViewModel? = null
+    private var mainActivity: IMainActivity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -30,32 +30,28 @@ class FindByNumOrTrackFragment(
 
         btnFind.setOnClickListener {
             val findStr = view.findViewById<EditText>(R.id.edOrderNum).text.toString()
-            viewModel?.findByOrderOrTrackNumClick(findStr)
+            mainActivity?.findByOrderOrTrackNumClick(orderOrTrackNum = findStr)
         }
 
-        viewModel?.getMainActivityFragmentState()?.observe(viewLifecycleOwner) { it as FindByNumOrTrackMainActivityState
+        mainActivity?.getMainActivityState()?.observe(viewLifecycleOwner) {
+            it as FindByNumOrTrackMainActivityState
             val errLabel = view.findViewById<TextView>(R.id.errMess_NumberFrg)
             if (it.errorMsg.isNullOrEmpty()) {
                 errLabel.text = ""
                 errLabel.visibility = View.GONE
-            }
-            else{
+            } else {
                 errLabel.text = it.errorMsg
                 errLabel.visibility = View.VISIBLE
             }
         }
     }
 
-    override fun onDestroy() {
-        deAttachViewModel()
-        super.onDestroy()
-    }
-
-    fun attachViewModel(_vm: MainViewModel){
-        this.viewModel = _vm
-    }
-
-    private fun deAttachViewModel(){
-        this.viewModel = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            this.mainActivity = activity as IMainActivity
+        } catch (e: ClassCastException) {
+            throw ClassCastException("Activity $activity must implement IMainActivity")
+        }
     }
 }

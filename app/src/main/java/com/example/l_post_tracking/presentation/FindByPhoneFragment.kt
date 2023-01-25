@@ -1,7 +1,9 @@
 package com.example.l_post_tracking.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +17,7 @@ import com.example.l_post_tracking.viewmodel.MainViewModel
 
 class FindByPhoneFragment() : Fragment() {
 
-    private var viewModel: MainViewModel? = null
+    private var mainActivity: IMainActivity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -26,9 +28,9 @@ class FindByPhoneFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val edPhoneNum = view.findViewById<EditText>(R.id.edPhoneNumber)
-        val phoneNum = edPhoneNum.text.toString()
         val errLabel = view.findViewById<TextView>(R.id.errMess_PhoneFrg)
-        val orderOrTrackNum = (viewModel?.getMainActivityFragmentState() as FindByPhoneMainActivityState).orderNum
+        val orderOrTrackNum =
+            (mainActivity?.getMainActivityState()?.value as FindByPhoneMainActivityState).orderNum
 
         view.setBackgroundResource(R.drawable.round_corner)
         view.findViewById<TextView>(R.id.tvOrderNumHeader).text =
@@ -38,11 +40,11 @@ class FindByPhoneFragment() : Fragment() {
         )
 
         view.findViewById<Button>(R.id.btnFindClarifyPhone).setOnClickListener {
-            viewModel?.findByPhoneNumClick(
-                orderOrTrackNum = orderOrTrackNum, _phoneNum = phoneNum
+            mainActivity?.findByPhoneNumClick(
+                orderOrTrackNum = orderOrTrackNum, phoneNum = edPhoneNum.text.toString()
             )
         }
-        viewModel?.getMainActivityFragmentState()?.observe(viewLifecycleOwner) {
+        mainActivity?.getMainActivityState()?.observe(viewLifecycleOwner) {
             it as FindByPhoneMainActivityState
             if (it.errorMsg.isNullOrEmpty()) {
                 errLabel.text = ""
@@ -54,16 +56,12 @@ class FindByPhoneFragment() : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        deAttachViewModel()
-        super.onDestroy()
-    }
-
-    fun attachViewModel(_vm: MainViewModel) {
-        this.viewModel = _vm
-    }
-
-    private fun deAttachViewModel() {
-        this.viewModel = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            mainActivity = activity as IMainActivity
+        } catch (e: ClassCastException) {
+            throw ClassCastException("Activity $activity must implement IMainActivity")
+        }
     }
 }

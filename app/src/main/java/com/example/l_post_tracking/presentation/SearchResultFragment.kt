@@ -1,9 +1,11 @@
 package com.example.l_post_tracking.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +19,9 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SearchResultFragment() : Fragment() {
+class SearchResultFragment : Fragment() {
 
-    private var viewModel: MainViewModel? = null
+    private var mainActivity: IMainActivity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -30,7 +32,7 @@ class SearchResultFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundResource(R.drawable.round_corner)
-        viewModel?.getMainActivityFragmentState()?.observe(viewLifecycleOwner) {
+        mainActivity?.getMainActivityState()?.observe(viewLifecycleOwner) {
             it as ResultMainActivityState
             val orderData = it.orderData
             if (orderData.deliveryDatePlan.isNullOrEmpty()) {
@@ -45,8 +47,7 @@ class SearchResultFragment() : Fragment() {
                 view.findViewById<TextView>(R.id.tvDeliveryDate).text = String.format(
                     resources.getString(R.string.deliveryDate),
                     deliveryDateForm,
-                    orderData.timeFrom,
-                    orderData.timeTo
+                    if (orderData.timeFrom.isNullOrEmpty() || orderData.timeTo.isNullOrEmpty()) "" else "С ${orderData.timeFrom}:00 до ${orderData.timeTo}:00"
                 )
             }
             view.findViewById<TextView>(R.id.orderResultHeader).text = String.format(
@@ -75,11 +76,12 @@ class SearchResultFragment() : Fragment() {
                 val vAddress = view.findViewById<TextView>(R.id.tvAddress)
                 vAddress.text = underlinedFormAddress
                 if (!orderData.pvzAddress.isNullOrEmpty()) {
-                    vAddress.setOnClickListener { viewModel?.addressClick(orderData.pvzAddress!!) }
+                    vAddress.setOnClickListener { mainActivity?.addressClick(orderData.pvzAddress!!) }
                 }
+
                 view.findViewById<TextView>(R.id.tvPaymentMode).text = String.format(
                     resources.getString(R.string.payment_mode),
-                    if (orderData.canPayCash) "Оплата наличными" else "" + if (orderData.canPayCard) " или картой" else ""
+                    "${if (orderData.canPayCash) "Оплата наличными" else ""} ${if (orderData.canPayCard) "или картой" else ""}"
                 )
 //                view.findViewById<TextView>(R.id.tvWorkDays).text =
 //                    String.format(resources.getString(R.string.workDays), workDays)
@@ -90,16 +92,12 @@ class SearchResultFragment() : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        deAttachViewModel()
-        super.onDestroy()
-    }
-
-    fun attachViewModel(_vm: MainViewModel) {
-        this.viewModel = _vm
-    }
-
-    private fun deAttachViewModel() {
-        this.viewModel = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            this.mainActivity = activity as IMainActivity
+        } catch (e: ClassCastException) {
+            throw ClassCastException("Activity $activity must implement IMainActivity")
+        }
     }
 }

@@ -14,7 +14,7 @@
     <string name="order_state_header">Статус заказа</string>
     <string name="delivery_plan_date_header">Планируемая дата доставки</string>
     <string name="orderState">%1$s</string>
-    <string name="deliveryDate">%1$s \n С %2$s:00 до %3$s:00</string>
+    <string name="deliveryDate">%1$s\n%2$s</string>
     <string name="btnNewFind">Новый поиск</string>
     <string name="statepng">statePng</string>
     <string name="delivdatepng">delivDatePng</string>

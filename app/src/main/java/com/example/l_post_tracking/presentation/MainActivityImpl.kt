@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.model.*
@@ -17,7 +18,7 @@ import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivityImpl : AppCompatActivity(), IMainActivity, IMainActivity_A {
     private val callCCUseCase = CallCCUseCase(context = this)
     private val findAddressInMapUseCase = FindAddressInMapUseCase(context = this)
     private val apiOrderStorage = APIOrderStorageImpl()
@@ -45,21 +46,17 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tvHeadCCPhone).setOnClickListener { vm.callCCClick() }
 
-        vm.getMainActivityFragmentState().observe(this) { mainActivityFragmentState ->
+        vm.getMainActivityLiveDataState().observe(this) { mainActivityFragmentState ->
             btnNewFind.visibility = View.GONE
             when (mainActivityFragmentState) {
                 is FindByNumOrTrackMainActivityState -> {
-                    val frg = FindByNumOrTrackFragment()
-                    frg.attachViewModel(_vm = vm)
-                    supportFragmentManager.beginTransaction().replace(R.id.MainLayoutCenter, frg)
-                        .commitNow()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.MainLayoutCenter, FindByNumOrTrackFragment()).commitNow()
                 }
                 is FindByPhoneMainActivityState -> {
-                    val frg = FindByPhoneFragment()
-                    frg.attachViewModel(_vm = vm)
                     btnNewFind.visibility = View.VISIBLE
-                    supportFragmentManager.beginTransaction().replace(R.id.MainLayoutCenter, frg)
-                        .commitNow()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.MainLayoutCenter, FindByPhoneFragment()).commitNow()
                 }
                 is WaitingMainActivityState -> {
                     btnNewFind.visibility = View.VISIBLE
@@ -67,14 +64,28 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.MainLayoutCenter, WaitingFragment()).commitNow()
                 }
                 is ResultMainActivityState -> {
-                    val frg = FindByPhoneFragment()
-                    frg.attachViewModel(_vm = vm)
                     btnNewFind.visibility = View.VISIBLE
-                    supportFragmentManager.beginTransaction().replace(R.id.MainLayoutCenter, frg)
-                        .commitNow()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.MainLayoutCenter, SearchResultFragment()).commitNow()
                 }
             }
         }
+    }
+
+    override fun findByOrderOrTrackNumClick(orderOrTrackNum: String) {
+        vm.findByOrderOrTrackNumClick(orderOrTrackNum = orderOrTrackNum)
+    }
+
+    override fun findByPhoneNumClick(orderOrTrackNum: String, phoneNum: String) {
+        vm.findByPhoneNumClick(orderOrTrackNum = orderOrTrackNum, _phoneNum = phoneNum)
+    }
+
+    override fun getMainActivityState(): MutableLiveData<MainActivityState> {
+        return vm.getMainActivityLiveDataState()
+    }
+
+    override fun addressClick(address: String) {
+        vm.addressClick(address = address)
     }
 }
 

@@ -27,7 +27,7 @@ class MainViewModel(
         setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = null))
     }
 
-    fun getMainActivityFragmentState(): MutableLiveData<MainActivityState> {
+    fun getMainActivityLiveDataState(): MutableLiveData<MainActivityState> {
         return mainActivityState
     }
 
@@ -69,6 +69,7 @@ class MainViewModel(
                 findByOrderOrTrackNumUseCase.exec(appFindOrderDataModel)
 
             withContext(Dispatchers.Main) {
+
                 val stateModel = when (findByOrderOrTrackNumResult) {
                     is DataLoaded -> {
                         ResultMainActivityState(orderData = findByOrderOrTrackNumResult.data)
@@ -88,11 +89,11 @@ class MainViewModel(
     }
 
     fun findByPhoneNumClick(orderOrTrackNum: String, _phoneNum: String){
-        val phoneNum = reformatPhoneNumber(_phoneNumber = _phoneNum)
-        if (phoneNum.isEmpty()) {
+        if (_phoneNum.isEmpty()) {
             setMainActivityState(FindByPhoneMainActivityState(orderNum = orderOrTrackNum, errorMsg = "Введите номер телефона"))
             return
         }
+        val phoneNum = reformatPhoneNumber(_phoneNumber = _phoneNum)
         if (orderOrTrackNum.isEmpty()) {
             setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = "Введите номер или трек-номер отправления"))
             return
