@@ -20,7 +20,6 @@ import java.io.IOException
 private const val BASE_API_URL = "https://l-post.ru/"
 
 class APIOrderStorageImpl() : OrderStorage {
-
     private val orderRequestAPI =
         Retrofit.Builder().baseUrl(BASE_API_URL).addConverterFactory(GsonConverterFactory.create())
             .build().create<APIOrderStorageRetrofit>()
@@ -31,7 +30,7 @@ class APIOrderStorageImpl() : OrderStorage {
         val requestBody = APIOrderStorageFindDataJSONModel(orderTracking = apiFindData)
 
         val orderStorageFindResultModel = try {
-            val response = orderRequestAPI.getOrderInfo(requestBody).execute()
+            val response = orderRequestAPI.getOrderInfo(body = requestBody).execute()
             convertAPIResponseToOrderStorageFindResultModel(response)
         } catch (e: IOException) {
             OrderStorageFindResultModel(

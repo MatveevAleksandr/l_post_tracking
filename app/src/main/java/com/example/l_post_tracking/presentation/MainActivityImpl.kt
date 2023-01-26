@@ -6,41 +6,18 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.model.*
-import com.example.l_post_tracking.repository.OrderRepositoryImpl
-import com.example.l_post_tracking.storage.APIOrderStorageImpl
-import com.example.l_post_tracking.usecase.CallCCUseCase
-import com.example.l_post_tracking.usecase.FindAddressInMapUseCase
-import com.example.l_post_tracking.usecase.FindByOrderOrTrackNumUseCase
-import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
 import com.example.l_post_tracking.viewmodel.MainViewModel
-import com.example.l_post_tracking.viewmodel.MainViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFragment,
     IMainActivity.IFindByPhoneFragment, IMainActivity.ISearchResultFragment {
-    private val callCCUseCase = CallCCUseCase(context = this)
-    private val findAddressInMapUseCase = FindAddressInMapUseCase(context = this)
-    private val apiOrderStorage = APIOrderStorageImpl()
-    private val orderRepository = OrderRepositoryImpl(storage = apiOrderStorage)
-    private val findByOrderOrTrackNumUseCase =
-        FindByOrderOrTrackNumUseCase(orderRepository = orderRepository)
-    private val findByPhoneNumUseCase = FindByPhoneNumUseCase(orderRepository = orderRepository)
-    private lateinit var vm: MainViewModel
+    private val vm by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        vm = ViewModelProvider(
-            this, MainViewModelFactory(
-                callCCUseCase = callCCUseCase,
-                findAddressInMapUseCase = findAddressInMapUseCase,
-                findByOrderOrTrackNumUseCase = findByOrderOrTrackNumUseCase,
-                findByPhoneNumUseCase = findByPhoneNumUseCase
-            )
-        )[MainViewModel::class.java]
 
         val btnNewFind = findViewById<Button>(R.id.btnNewFind)
         btnNewFind.setOnClickListener { vm.newSearchClick() }
@@ -69,7 +46,6 @@ class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFra
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.MainLayoutCenter, SearchResultFragment()).commitNow()
                 }
-                else -> {}
             }
         }
     }
