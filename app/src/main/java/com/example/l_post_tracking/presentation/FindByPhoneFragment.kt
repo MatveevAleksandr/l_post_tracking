@@ -3,7 +3,6 @@ package com.example.l_post_tracking.presentation
 import android.content.Context
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.model.FindByPhoneMainActivityState
-import com.example.l_post_tracking.viewmodel.MainViewModel
 
 class FindByPhoneFragment() : Fragment() {
 
-    private var mainActivity: IMainActivity? = null
+    private var mainActivity: IMainActivity.IFindByPhoneFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -30,7 +28,7 @@ class FindByPhoneFragment() : Fragment() {
         val edPhoneNum = view.findViewById<EditText>(R.id.edPhoneNumber)
         val errLabel = view.findViewById<TextView>(R.id.errMess_PhoneFrg)
         val orderOrTrackNum =
-            (mainActivity?.getMainActivityState()?.value as FindByPhoneMainActivityState).orderNum
+            (mainActivity?.getMainActivityLiveDataState()?.value as FindByPhoneMainActivityState).orderNum
 
         view.setBackgroundResource(R.drawable.round_corner)
         view.findViewById<TextView>(R.id.tvOrderNumHeader).text =
@@ -44,7 +42,7 @@ class FindByPhoneFragment() : Fragment() {
                 orderOrTrackNum = orderOrTrackNum, phoneNum = edPhoneNum.text.toString()
             )
         }
-        mainActivity?.getMainActivityState()?.observe(viewLifecycleOwner) {
+        mainActivity?.getMainActivityLiveDataState()?.observe(viewLifecycleOwner) {
             it as FindByPhoneMainActivityState
             if (it.errorMsg.isNullOrEmpty()) {
                 errLabel.text = ""
@@ -59,9 +57,9 @@ class FindByPhoneFragment() : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            mainActivity = activity as IMainActivity
+            mainActivity = activity as IMainActivity.IFindByPhoneFragment
         } catch (e: ClassCastException) {
-            throw ClassCastException("Activity $activity must implement IMainActivity")
+            throw ClassCastException("Activity $activity must implement IMainActivity.IFindByPhoneFragment")
         }
     }
 }

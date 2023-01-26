@@ -1,6 +1,7 @@
 package com.example.l_post_tracking.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.l_post_tracking.model.*
@@ -88,9 +89,13 @@ class MainViewModel(
         }
     }
 
-    fun findByPhoneNumClick(orderOrTrackNum: String, _phoneNum: String){
+    fun findByPhoneNumClick(orderOrTrackNum: String, _phoneNum: String) {
         if (_phoneNum.isEmpty()) {
-            setMainActivityState(FindByPhoneMainActivityState(orderNum = orderOrTrackNum, errorMsg = "Введите номер телефона"))
+            setMainActivityState(
+                FindByPhoneMainActivityState(
+                    orderNum = orderOrTrackNum, errorMsg = "Введите номер телефона"
+                )
+            )
             return
         }
         val phoneNum = reformatPhoneNumber(_phoneNumber = _phoneNum)
@@ -103,15 +108,16 @@ class MainViewModel(
             AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = phoneNum)
 
         coroutineJob = coroutineScope.launch(Dispatchers.IO) {
-            val findByPhoneNumResult =
-                findByPhoneNumUseCase.exec(appFindOrderDataModel)
+            val findByPhoneNumResult = findByPhoneNumUseCase.exec(appFindOrderDataModel)
             withContext(Dispatchers.Main) {
                 val stateModel = when (findByPhoneNumResult) {
                     is DataLoaded -> {
                         ResultMainActivityState(orderData = findByPhoneNumResult.data)
                     }
                     is GetError -> {
-                        FindByPhoneMainActivityState(orderNum = orderOrTrackNum, errorMsg = findByPhoneNumResult.errMessage)
+                        FindByPhoneMainActivityState(
+                            orderNum = orderOrTrackNum, errorMsg = findByPhoneNumResult.errMessage
+                        )
                     }
                     is NeedAddPhoneNumberForSearch -> {
                         FindByPhoneMainActivityState(
@@ -127,11 +133,13 @@ class MainViewModel(
     /**
      * Привести номер телефона к читаемому формату для запросов
      */
-    private fun reformatPhoneNumber(_phoneNumber: String): String{
-        var phoneNumber: String = _phoneNumber.replace(" ","", true).replace("-","", true)
+    private fun reformatPhoneNumber(_phoneNumber: String): String {
+        var phoneNumber: String =
+            _phoneNumber.replace(" ", "", true).replace("-", "", true).replace("(", "", true)
+                .replace(")", "", true)
         phoneNumber = when {
-            (phoneNumber.length < 11 ) -> "+7$phoneNumber"
-            (phoneNumber.length == 11 ) -> "+7${phoneNumber.substring(1)}"
+            (phoneNumber.length < 11) -> "+7$phoneNumber"
+            (phoneNumber.length == 11) -> "+7${phoneNumber.substring(1)}"
             else -> phoneNumber
         }
         return phoneNumber

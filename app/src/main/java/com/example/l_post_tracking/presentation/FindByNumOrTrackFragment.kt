@@ -11,11 +11,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.model.FindByNumOrTrackMainActivityState
-import com.example.l_post_tracking.viewmodel.MainViewModel
 
 class FindByNumOrTrackFragment : Fragment() {
 
-    private var mainActivity: IMainActivity? = null
+    private var mainActivity: IMainActivity.IFindByNumOrTrackFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,7 +32,7 @@ class FindByNumOrTrackFragment : Fragment() {
             mainActivity?.findByOrderOrTrackNumClick(orderOrTrackNum = findStr)
         }
 
-        mainActivity?.getMainActivityState()?.observe(viewLifecycleOwner) {
+        mainActivity?.getMainActivityLiveDataState()?.observe(viewLifecycleOwner) {
             it as FindByNumOrTrackMainActivityState
             val errLabel = view.findViewById<TextView>(R.id.errMess_NumberFrg)
             if (it.errorMsg.isNullOrEmpty()) {
@@ -49,9 +48,9 @@ class FindByNumOrTrackFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            this.mainActivity = activity as IMainActivity
+            this.mainActivity = activity as IMainActivity.IFindByNumOrTrackFragment
         } catch (e: ClassCastException) {
-            throw ClassCastException("Activity $activity must implement IMainActivity")
+            throw ClassCastException("Activity $activity must implement IMainActivity.IFindByNumOrTrackFragment")
         }
     }
 }

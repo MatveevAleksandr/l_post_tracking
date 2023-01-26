@@ -35,11 +35,15 @@ class APIOrderStorageImpl() : OrderStorage {
             convertAPIResponseToOrderStorageFindResultModel(response)
         } catch (e: IOException) {
             OrderStorageFindResultModel(
-                isDataLoaded = false, isNeedAddPhoneNum = false, errorMessage = e.message
+                isDataLoaded = false,
+                isNeedAddPhoneNum = false,
+                errorMessage = "Ошибка загрузки. Код 100. Обратитесь в поддержку"
             )
         } catch (e: RuntimeException) {
             OrderStorageFindResultModel(
-                isDataLoaded = false, isNeedAddPhoneNum = false, errorMessage = e.message
+                isDataLoaded = false,
+                isNeedAddPhoneNum = false,
+                errorMessage = "Ошибка загрузки. Код 101. Обратитесь в поддержку"
             )
         }
         return orderStorageFindResultModel

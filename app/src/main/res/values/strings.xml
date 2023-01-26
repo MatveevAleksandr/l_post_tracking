@@ -23,8 +23,5 @@
     <string name="addressDescription"><u>%1$s\n%2$s</u></string>
     <string name="payment_png">payment_png</string>
     <string name="payment_mode">%1$s</string>
-    <string name="work_mode_png">work_mode_png</string>
-    <string name="workHours">%1$s</string>
-    <string name="workDays">%1$s</string>
     <string name="logoimage_contentDescr">logoImage</string>
 </resources>

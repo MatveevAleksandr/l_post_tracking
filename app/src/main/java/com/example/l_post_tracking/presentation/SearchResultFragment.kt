@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.model.ResultMainActivityState
-import com.example.l_post_tracking.viewmodel.MainViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SearchResultFragment : Fragment() {
 
-    private var mainActivity: IMainActivity? = null
+    private var mainActivity: IMainActivity.ISearchResultFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -32,7 +30,7 @@ class SearchResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundResource(R.drawable.round_corner)
-        mainActivity?.getMainActivityState()?.observe(viewLifecycleOwner) {
+        mainActivity?.getMainActivityLiveDataState()?.observe(viewLifecycleOwner) {
             it as ResultMainActivityState
             val orderData = it.orderData
             if (orderData.deliveryDatePlan.isNullOrEmpty()) {
@@ -83,10 +81,6 @@ class SearchResultFragment : Fragment() {
                     resources.getString(R.string.payment_mode),
                     "${if (orderData.canPayCash) "Оплата наличными" else ""} ${if (orderData.canPayCard) "или картой" else ""}"
                 )
-//                view.findViewById<TextView>(R.id.tvWorkDays).text =
-//                    String.format(resources.getString(R.string.workDays), workDays)
-//                view.findViewById<TextView>(R.id.tvWorkHours).text =
-//                    String.format(resources.getString(R.string.workHours), workHours)
                 view.findViewById<ConstraintLayout>(R.id.clPS_Address).visibility = View.VISIBLE
             }
         }
@@ -95,9 +89,9 @@ class SearchResultFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            this.mainActivity = activity as IMainActivity
+            this.mainActivity = activity as IMainActivity.ISearchResultFragment
         } catch (e: ClassCastException) {
-            throw ClassCastException("Activity $activity must implement IMainActivity")
+            throw ClassCastException("Activity $activity must implement IMainActivity.ISearchResultFragment")
         }
     }
 }

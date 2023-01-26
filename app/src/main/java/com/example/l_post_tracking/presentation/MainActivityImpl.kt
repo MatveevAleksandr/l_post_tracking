@@ -18,7 +18,8 @@ import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 
-class MainActivityImpl : AppCompatActivity(), IMainActivity, IMainActivity_A {
+class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFragment,
+    IMainActivity.IFindByPhoneFragment, IMainActivity.ISearchResultFragment {
     private val callCCUseCase = CallCCUseCase(context = this)
     private val findAddressInMapUseCase = FindAddressInMapUseCase(context = this)
     private val apiOrderStorage = APIOrderStorageImpl()
@@ -68,6 +69,7 @@ class MainActivityImpl : AppCompatActivity(), IMainActivity, IMainActivity_A {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.MainLayoutCenter, SearchResultFragment()).commitNow()
                 }
+                else -> {}
             }
         }
     }
@@ -80,7 +82,7 @@ class MainActivityImpl : AppCompatActivity(), IMainActivity, IMainActivity_A {
         vm.findByPhoneNumClick(orderOrTrackNum = orderOrTrackNum, _phoneNum = phoneNum)
     }
 
-    override fun getMainActivityState(): MutableLiveData<MainActivityState> {
+    override fun getMainActivityLiveDataState(): MutableLiveData<MainActivityState> {
         return vm.getMainActivityLiveDataState()
     }
 
