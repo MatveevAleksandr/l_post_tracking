@@ -11,6 +11,9 @@ import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * темная тема статика как в светлой
+ */
 
 class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFragment,
     IMainActivity.IFindByPhoneFragment, IMainActivity.ISearchResultFragment {
