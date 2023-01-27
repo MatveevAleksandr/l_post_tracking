@@ -11,8 +11,10 @@ import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFragment,
     IMainActivity.IFindByPhoneFragment, IMainActivity.ISearchResultFragment {
+
     private val vm by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

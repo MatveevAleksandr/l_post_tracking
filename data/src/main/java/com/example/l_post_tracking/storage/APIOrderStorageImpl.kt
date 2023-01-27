@@ -20,6 +20,11 @@ import java.io.IOException
 private const val BASE_API_URL = "https://l-post.ru/"
 
 class APIOrderStorageImpl() : OrderStorage {
+
+    init {
+        Log.e("AAA_AAA", "APIOrderStorageImpl $this")
+    }
+
     private val orderRequestAPI =
         Retrofit.Builder().baseUrl(BASE_API_URL).addConverterFactory(GsonConverterFactory.create())
             .build().create<APIOrderStorageRetrofit>()
@@ -121,7 +126,7 @@ class APIOrderStorageImpl() : OrderStorage {
                     OrderStorageFindResultModel(
                         isDataLoaded = false,
                         isNeedAddPhoneNum = false,
-                        errorMessage = "Системная ошибка. Пожалуйста свяжитесь с поддержкой 8 800 700-1006"
+                        errorMessage = "Ошибка загрузки. Код 102. Обратитесь в поддержку"
                     )
                 }
             }

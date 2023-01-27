@@ -37,7 +37,10 @@ class OrderRepositoryImpl(private val storage: OrderStorage) : OrderRepository {
         } else if (storageResult.isNeedAddPhoneNum) {
             NeedAddPhoneNumberForSearch
         } else {
-            GetError(errMessage = storageResult.errorMessage ?: "Системная ошибка")
+            GetError(
+                errMessage = storageResult.errorMessage
+                    ?: "Ошибка загрузки. Код 103. Обратитесь в поддержку"
+            )
         }
     }
 }

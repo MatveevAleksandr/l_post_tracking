@@ -7,6 +7,6 @@ import com.example.l_post_tracking.storage.OrderStorage
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<OrderStorage> { APIOrderStorageImpl() }
     single<OrderRepository> { OrderRepositoryImpl(storage = get()) }
+    single<OrderStorage> { APIOrderStorageImpl() }
 }
