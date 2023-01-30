@@ -1,32 +1,41 @@
 package com.example.l_post_tracking.presentation
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.R
+import com.example.l_post_tracking.app.App
 import com.example.l_post_tracking.di.DaggerAppComponent
 import com.example.l_post_tracking.model.*
+import com.example.l_post_tracking.viewmodel.MainViewModel
+import com.example.l_post_tracking.viewmodel.MainViewModelFactory
+import javax.inject.Inject
+
 /**
  * темная тема
  * dagger - разнести по модулям проекта/ компонент надо создавать в том модуле, где находится объект, куда компонент будет инджектить
- *          попробовать @Inject, добавить синглтонов на репу и стор
+ *          убрать инжекты из модулей, добавить инжекты к конструкторам
+ * не работают кейсы с контекстом
  * compose
  */
 
 class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFragment,
     IMainActivity.IFindByPhoneFragment, IMainActivity.ISearchResultFragment {
 
-    private val vm = DaggerAppComponent.factory().create(this).getMainViewModel()
-//    private val vm1 = DaggerAppComponent.factory().create(this).getMainViewModel()
-//    private val vm2 = DaggerAppComponent.factory().create(this).getMainViewModel()
-
+    @Inject
+    lateinit var vmFactory: MainViewModelFactory
+    private lateinit var vm: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        (applicationContext as App).appComponent.injectMainActivity(this)
 
         val btnNewFind = findViewById<Button>(R.id.btnNewFind)
         btnNewFind.setOnClickListener { vm.newSearchClick() }

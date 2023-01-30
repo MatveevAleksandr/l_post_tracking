@@ -15,10 +15,6 @@ private const val BASE_API_URL = "https://l-post.ru/"
 
 class APIOrderStorageImpl : OrderStorage {
 
-    init {
-        Log.e("AAA_AAA", "APIOrderStorageImpl $this")
-    }
-
     private val orderRequestAPI =
         Retrofit.Builder().baseUrl(BASE_API_URL).addConverterFactory(GsonConverterFactory.create())
             .build().create<APIOrderStorageRetrofit>()
