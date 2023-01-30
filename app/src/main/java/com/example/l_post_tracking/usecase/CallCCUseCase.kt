@@ -10,6 +10,9 @@ import androidx.core.content.ContextCompat
 private const val CC_PHONE = "88007001006"
 
 class CallCCUseCase(private val context: Context) {
+    init {
+        Log.e("AAA_AAA", "CallCCUseCase $this")
+    }
     fun exec(){
         val intPhoneCall = Intent(Intent.ACTION_DIAL)
         intPhoneCall.data = Uri.parse("tel:$CC_PHONE")

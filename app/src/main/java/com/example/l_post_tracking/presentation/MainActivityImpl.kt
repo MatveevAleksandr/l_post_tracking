@@ -7,18 +7,22 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import com.example.l_post_tracking.R
+import com.example.l_post_tracking.di.DaggerAppComponent
 import com.example.l_post_tracking.model.*
-import com.example.l_post_tracking.viewmodel.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-
 /**
- * темная тема статика как в светлой
+ * темная тема
+ * dagger - разнести по модулям проекта/ компонент надо создавать в том модуле, где находится объект, куда компонент будет инджектить
+ *          почему APIOrderStorageImpl дважды создается ?
+ * compose
  */
 
 class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFragment,
     IMainActivity.IFindByPhoneFragment, IMainActivity.ISearchResultFragment {
 
-    private val vm by viewModel<MainViewModel>()
+    private val vm = DaggerAppComponent.factory().create(this).getMainViewModel()
+//    private val vm1 = DaggerAppComponent.factory().create(this).getMainViewModel()
+//    private val vm2 = DaggerAppComponent.factory().create(this).getMainViewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

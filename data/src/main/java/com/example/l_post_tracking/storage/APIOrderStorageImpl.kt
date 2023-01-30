@@ -1,15 +1,9 @@
 package com.example.l_post_tracking.storage
 
-import android.util.JsonReader
 import android.util.Log
 import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.retrofit.APIOrderStorageRetrofit
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonElement
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONTokener
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,7 +13,7 @@ import java.io.IOException
 
 private const val BASE_API_URL = "https://l-post.ru/"
 
-class APIOrderStorageImpl() : OrderStorage {
+class APIOrderStorageImpl : OrderStorage {
 
     init {
         Log.e("AAA_AAA", "APIOrderStorageImpl $this")
