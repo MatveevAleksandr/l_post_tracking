@@ -29,7 +29,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".presentation.MainActivityImpl" />
+        <activity
+            android:name=".presentation.MainActivityImpl"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
