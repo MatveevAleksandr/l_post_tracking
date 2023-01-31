@@ -5,7 +5,6 @@ import com.example.l_post_tracking.usecase.CallCCUseCase
 import com.example.l_post_tracking.usecase.FindAddressInMapUseCase
 import com.example.l_post_tracking.usecase.FindByOrderOrTrackNumUseCase
 import com.example.l_post_tracking.usecase.FindByPhoneNumUseCase
-import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 import dagger.Module
 import dagger.Provides

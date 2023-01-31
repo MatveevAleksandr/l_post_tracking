@@ -1,6 +1,5 @@
 package com.example.l_post_tracking.presentation
 
-import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.R
 import com.example.l_post_tracking.app.App
-import com.example.l_post_tracking.di.DaggerAppComponent
 import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
@@ -18,8 +16,6 @@ import javax.inject.Inject
 
 /**
  * темная тема
- * dagger - разнести по модулям проекта/ компонент надо создавать в том модуле, где находится объект, куда компонент будет инджектить
- * не работают кейсы с контекстом
  * compose
  */
 
@@ -35,6 +31,7 @@ class MainActivityImpl : AppCompatActivity(), IMainActivity.IFindByNumOrTrackFra
         setContentView(R.layout.activity_main)
 
         (applicationContext as App).appComponent.injectMainActivity(this)
+        vm = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
 
         val btnNewFind = findViewById<Button>(R.id.btnNewFind)
         btnNewFind.setOnClickListener { vm.newSearchClick() }
