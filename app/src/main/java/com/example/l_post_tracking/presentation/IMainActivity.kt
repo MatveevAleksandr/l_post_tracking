@@ -1,7 +1,7 @@
 package com.example.l_post_tracking.presentation
 
 import androidx.lifecycle.MutableLiveData
-import com.example.l_post_tracking.model.MainActivityState
+import com.example.l_post_tracking.model.MainScreenState
 
 sealed interface IMainActivity {
     interface IFindByNumOrTrackFragment : IMainActivity {
@@ -16,5 +16,5 @@ sealed interface IMainActivity {
         fun addressClick(address: String)
     }
 
-    fun getMainActivityLiveDataState(): MutableLiveData<MainActivityState>
+    fun getMainActivityLiveDataState(): MutableLiveData<MainScreenState>
 }

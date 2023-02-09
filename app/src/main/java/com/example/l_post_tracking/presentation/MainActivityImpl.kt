@@ -1,19 +1,15 @@
 package com.example.l_post_tracking.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.Text
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.l_post_tracking.R
 import com.example.l_post_tracking.app.App
-import com.example.l_post_tracking.model.*
-import com.example.l_post_tracking.presentation_compose.FindByNumOrTrackElement
+import com.example.l_post_tracking.model.MainScreenState
+import com.example.l_post_tracking.presentation_compose.MainScreen
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 import javax.inject.Inject
@@ -32,9 +28,13 @@ class MainActivityImpl : ComponentActivity(), IMainActivity.IFindByNumOrTrackFra
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e("AAA_AAA", "MainActivityImpl")
+
+        (applicationContext as App).appComponent.injectMainActivity(this)
+        vm = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
 
         setContent{
-            FindByNumOrTrackElement()
+            MainScreen(vm)
         }
 
 
@@ -82,8 +82,8 @@ class MainActivityImpl : ComponentActivity(), IMainActivity.IFindByNumOrTrackFra
         vm.findByPhoneNumClick(orderOrTrackNum = orderOrTrackNum, _phoneNum = phoneNum)
     }
 
-    override fun getMainActivityLiveDataState(): MutableLiveData<MainActivityState> {
-        return vm.getMainActivityLiveDataState()
+    override fun getMainActivityLiveDataState(): MutableLiveData<MainScreenState> {
+        return vm.getMainScreenLiveDataState()
     }
 
     override fun addressClick(address: String) {

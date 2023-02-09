@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
-import com.example.l_post_tracking.model.ResultMainActivityState
+import com.example.l_post_tracking.model.ResultMainScreenState
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,7 +31,7 @@ class SearchResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundResource(R.drawable.round_corner)
         mainActivity?.getMainActivityLiveDataState()?.observe(viewLifecycleOwner) {
-            it as ResultMainActivityState
+            it as ResultMainScreenState
             val orderData = it.orderData
             if (orderData.deliveryDatePlan.isNullOrEmpty()) {
                 view.findViewById<TextView>(R.id.tvDeliveryDate).text =

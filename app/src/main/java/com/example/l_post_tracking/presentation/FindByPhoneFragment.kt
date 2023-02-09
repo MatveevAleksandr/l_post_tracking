@@ -11,7 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
-import com.example.l_post_tracking.model.FindByPhoneMainActivityState
+import com.example.l_post_tracking.model.FindByPhoneMainScreenState
 
 class FindByPhoneFragment() : Fragment() {
 
@@ -28,7 +28,7 @@ class FindByPhoneFragment() : Fragment() {
         val edPhoneNum = view.findViewById<EditText>(R.id.edPhoneNumber)
         val errLabel = view.findViewById<TextView>(R.id.errMess_PhoneFrg)
         val orderOrTrackNum =
-            (mainActivity?.getMainActivityLiveDataState()?.value as FindByPhoneMainActivityState).orderNum
+            (mainActivity?.getMainActivityLiveDataState()?.value as FindByPhoneMainScreenState).orderNum
 
         view.setBackgroundResource(R.drawable.round_corner)
         view.findViewById<TextView>(R.id.tvOrderNumHeader).text =
@@ -43,7 +43,7 @@ class FindByPhoneFragment() : Fragment() {
             )
         }
         mainActivity?.getMainActivityLiveDataState()?.observe(viewLifecycleOwner) {
-            it as FindByPhoneMainActivityState
+            it as FindByPhoneMainScreenState
             if (it.errorMsg.isNullOrEmpty()) {
                 errLabel.text = ""
                 errLabel.visibility = View.GONE

@@ -1,5 +1,6 @@
 package com.example.l_post_tracking.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.usecase.CallCCUseCase

@@ -1,6 +1,7 @@
 package com.example.l_post_tracking.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.l_post_tracking.model.*
@@ -18,21 +19,22 @@ class MainViewModel(
     private val findByPhoneNumUseCase: FindByPhoneNumUseCase
 ) : ViewModel() {
 
-    private var mainActivityState = MutableLiveData<MainActivityState>()
+    private var mainScreenState = MutableLiveData<MainScreenState>()
 
     private var coroutineJob: Job = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineJob)
 
     init {
-        setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = null))
+        Log.e("AAA_AAA", "MainViewModel")
+        setMainActivityState(FindByNumOrTrackMainScreenState(errorMsg = null))
     }
 
-    fun getMainActivityLiveDataState(): MutableLiveData<MainActivityState> {
-        return mainActivityState
+    fun getMainScreenLiveDataState(): MutableLiveData<MainScreenState> {
+        return mainScreenState
     }
 
-    private fun setMainActivityState(state: MainActivityState) {
-        mainActivityState.value = state
+    private fun setMainActivityState(state: MainScreenState) {
+        mainScreenState.value = state
     }
 
     fun callCCClick() {
@@ -50,15 +52,15 @@ class MainViewModel(
         if (!coroutineJob.isCancelled) {
             coroutineJob.cancel()
         }
-        setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = null))
+        setMainActivityState(FindByNumOrTrackMainScreenState(errorMsg = null))
     }
 
     fun findByOrderOrTrackNumClick(orderOrTrackNum: String) {
         if (orderOrTrackNum.isEmpty()) {
-            setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = "Введите номер или трек-номер отправления"))
+            setMainActivityState(FindByNumOrTrackMainScreenState(errorMsg = "Введите номер или трек-номер отправления"))
             return
         }
-        setMainActivityState(WaitingMainActivityState)
+        setMainActivityState(WaitingMainScreenState)
         val appFindOrderDataModel =
             AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = null)
         //  val appFindOrderDataModel = AppFindOrderDataModel(orderOrTrackNum = "2206/230P", phoneNum = null)  // курьерка
@@ -72,13 +74,13 @@ class MainViewModel(
 
                 val stateModel = when (findByOrderOrTrackNumResult) {
                     is DataLoaded -> {
-                        ResultMainActivityState(orderData = findByOrderOrTrackNumResult.data)
+                        ResultMainScreenState(orderData = findByOrderOrTrackNumResult.data)
                     }
                     is GetError -> {
-                        FindByNumOrTrackMainActivityState(errorMsg = findByOrderOrTrackNumResult.errMessage)
+                        FindByNumOrTrackMainScreenState(errorMsg = findByOrderOrTrackNumResult.errMessage)
                     }
                     is NeedAddPhoneNumberForSearch -> {
-                        FindByPhoneMainActivityState(
+                        FindByPhoneMainScreenState(
                             orderNum = orderOrTrackNum, errorMsg = null
                         )
                     }
@@ -91,7 +93,7 @@ class MainViewModel(
     fun findByPhoneNumClick(orderOrTrackNum: String, _phoneNum: String) {
         if (_phoneNum.isEmpty()) {
             setMainActivityState(
-                FindByPhoneMainActivityState(
+                FindByPhoneMainScreenState(
                     orderNum = orderOrTrackNum, errorMsg = "Введите номер телефона"
                 )
             )
@@ -99,10 +101,10 @@ class MainViewModel(
         }
         val phoneNum = reformatPhoneNumber(_phoneNumber = _phoneNum)
         if (orderOrTrackNum.isEmpty()) {
-            setMainActivityState(FindByNumOrTrackMainActivityState(errorMsg = "Введите номер или трек-номер отправления"))
+            setMainActivityState(FindByNumOrTrackMainScreenState(errorMsg = "Введите номер или трек-номер отправления"))
             return
         }
-        setMainActivityState(WaitingMainActivityState)
+        setMainActivityState(WaitingMainScreenState)
         val appFindOrderDataModel =
             AppFindOrderDataModel(orderOrTrackNum = orderOrTrackNum, phoneNum = phoneNum)
 
@@ -111,15 +113,15 @@ class MainViewModel(
             withContext(Dispatchers.Main) {
                 val stateModel = when (findByPhoneNumResult) {
                     is DataLoaded -> {
-                        ResultMainActivityState(orderData = findByPhoneNumResult.data)
+                        ResultMainScreenState(orderData = findByPhoneNumResult.data)
                     }
                     is GetError -> {
-                        FindByPhoneMainActivityState(
+                        FindByPhoneMainScreenState(
                             orderNum = orderOrTrackNum, errorMsg = findByPhoneNumResult.errMessage
                         )
                     }
                     is NeedAddPhoneNumberForSearch -> {
-                        FindByPhoneMainActivityState(
+                        FindByPhoneMainScreenState(
                             orderNum = orderOrTrackNum, errorMsg = null
                         )
                     }

@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.l_post_tracking.R
-import com.example.l_post_tracking.model.FindByNumOrTrackMainActivityState
+import com.example.l_post_tracking.model.FindByNumOrTrackMainScreenState
 
 class FindByNumOrTrackFragment : Fragment() {
 
@@ -33,7 +33,7 @@ class FindByNumOrTrackFragment : Fragment() {
         }
 
         mainActivity?.getMainActivityLiveDataState()?.observe(viewLifecycleOwner) {
-            it as FindByNumOrTrackMainActivityState
+            it as FindByNumOrTrackMainScreenState
             val errLabel = view.findViewById<TextView>(R.id.errMess_NumberFrg)
             if (it.errorMsg.isNullOrEmpty()) {
                 errLabel.text = ""
