@@ -42,24 +42,18 @@ fun FindByNumOrTrackElement(
                 fontSize = 15.sp,
                 color = Color.Gray
             )
-            OutlinedTextField(value = "",
+            OutlinedTextField(value = txtEdit.value,
                 onValueChange = onEditChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 placeholder = { Text(text = "Номер или трек номер отправления") })
             if (!txtError.isNullOrEmpty()){
-                ErrorLabel(txtError)
+                Text(text = txtError, color = Color(red = 174, green = 3, blue = 3))
             }
             Button(onClick = onFindClick, modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Найти")
             }
         }
     }
-}
-
-@Composable
-fun ErrorLabel(txtError: String) {
-    Log.e("AAA_AAA", "ErrorLabel")
-    Text(text = txtError, color = Color.Red)
 }
