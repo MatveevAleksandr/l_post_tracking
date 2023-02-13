@@ -2,6 +2,7 @@ package com.example.l_post_tracking.viewmodel
 
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.l_post_tracking.model.*
@@ -25,12 +26,11 @@ class MainViewModel(
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineJob)
 
     init {
-        Log.e("AAA_AAA", "MainViewModel")
         setMainActivityState(FindByNumOrTrackMainScreenState(errorMsg = null))
     }
 
-    fun getMainScreenLiveDataState(): MutableLiveData<MainScreenState> {
-        return mainScreenState
+    fun getMainScreenLiveDataState(): LiveData<MainScreenState> {
+        return this.mainScreenState
     }
 
     private fun setMainActivityState(state: MainScreenState) {

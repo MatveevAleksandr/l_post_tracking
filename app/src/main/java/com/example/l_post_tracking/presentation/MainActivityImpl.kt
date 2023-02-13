@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.app.App
 import com.example.l_post_tracking.model.MainScreenState
@@ -28,12 +27,11 @@ class MainActivityImpl : ComponentActivity(), IMainActivity.IFindByNumOrTrackFra
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("AAA_AAA", "MainActivityImpl")
 
         (applicationContext as App).appComponent.injectMainActivity(this)
         vm = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
 
-        setContent{
+        setContent {
             MainScreen(vm)
         }
 
@@ -82,7 +80,7 @@ class MainActivityImpl : ComponentActivity(), IMainActivity.IFindByNumOrTrackFra
         vm.findByPhoneNumClick(orderOrTrackNum = orderOrTrackNum, _phoneNum = phoneNum)
     }
 
-    override fun getMainActivityLiveDataState(): MutableLiveData<MainScreenState> {
+    override fun getMainActivityLiveDataState(): LiveData<MainScreenState> {
         return vm.getMainScreenLiveDataState()
     }
 
