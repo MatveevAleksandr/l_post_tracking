@@ -1,7 +1,7 @@
 package com.example.l_post_tracking.di
 
 import android.content.Context
-import com.example.l_post_tracking.presentation.MainActivityImpl
+import com.example.l_post_tracking.presentation_compose.MainActivityImpl
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

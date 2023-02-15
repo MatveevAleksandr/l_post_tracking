@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.l_post_tracking.R
+import com.example.l_post_tracking.presentation_compose.MainActivityImpl
 
 class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

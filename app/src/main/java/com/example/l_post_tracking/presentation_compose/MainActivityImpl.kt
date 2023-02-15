@@ -1,21 +1,24 @@
-package com.example.l_post_tracking.presentation
+package com.example.l_post_tracking.presentation_compose
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.app.App
 import com.example.l_post_tracking.model.MainScreenState
-import com.example.l_post_tracking.presentation_compose.MainScreen
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 import javax.inject.Inject
 
 /**
  * темная тема
- * compose
+ * кнопка новый поиск
+ * проверить поиск сномером телефона
+ * велком активити в компоуз
+ * удалить фрагменты
+ * удалить IMainActivity
+ * MainScreen di
  */
 
 class MainActivityImpl : ComponentActivity(), IMainActivity.IFindByNumOrTrackFragment,

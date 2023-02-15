@@ -73,9 +73,9 @@ fun MainScreenNewFindElement(
     if (state.value !is FindByNumOrTrackMainScreenState) {
         Button(
             onClick = onNewSearchClick, modifier = modifier, colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(red = 77, green = 66, blue = 165, alpha = 255),
+                backgroundColor = Color(red = 101, green = 207, blue = 220, alpha = 115),
                 contentColor = Color.White
-            ), border = BorderStroke(1.dp, Color.Gray)
+            )
         ) {
             Text(text = "Новый поиск")
         }

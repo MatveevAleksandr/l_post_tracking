@@ -1,4 +1,4 @@
-package com.example.l_post_tracking.presentation
+package com.example.l_post_tracking.presentation_compose
 
 import androidx.lifecycle.LiveData
 import com.example.l_post_tracking.model.MainScreenState
