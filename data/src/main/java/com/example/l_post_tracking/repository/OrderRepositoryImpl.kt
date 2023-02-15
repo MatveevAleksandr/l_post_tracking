@@ -3,6 +3,9 @@ package com.example.l_post_tracking.repository
 import android.util.Log
 import com.example.l_post_tracking.model.*
 import com.example.l_post_tracking.storage.OrderStorage
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OrderRepositoryImpl(private val storage: OrderStorage) : OrderRepository {
 
@@ -20,13 +23,26 @@ class OrderRepositoryImpl(private val storage: OrderStorage) : OrderRepository {
     }
 
     private fun convertStorageFindResultModelToAppFindResultModel(storageResult: OrderStorageFindResultModel): AppFindOrderResultState {
+
+        val convertedDeliveryDate = if (storageResult.deliveryDatePlan != null) {
+            val formattedDate: String = DateFormat.getDateInstance(DateFormat.FULL).format(
+                SimpleDateFormat(
+                    "yyyy-MM-dd", Locale.US
+                ).parse(storageResult.deliveryDatePlan)!!
+            )
+            val splitDate = formattedDate.split(",").toTypedArray()
+            splitDate[1] + " (${splitDate[0]})"
+        } else {
+            null
+        }
+
         return if (storageResult.isDataLoaded) {
             val data = AppFindOrderResultDataModel(
                 customerNumber = storageResult.customerNumber,
                 orderNumber = storageResult.orderNumber,
                 orderType = storageResult.orderType,
                 statusDescription = storageResult.statusDescription,
-                deliveryDatePlan = storageResult.deliveryDatePlan,
+                deliveryDatePlan = convertedDeliveryDate,
                 timeFrom = storageResult.timeFrom,
                 timeTo = storageResult.timeTo,
                 isCourier = storageResult.isCourier ?: false,

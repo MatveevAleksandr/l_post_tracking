@@ -1,13 +1,17 @@
 package com.example.l_post_tracking.presentation_compose
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,18 +46,20 @@ fun MainScreen(
             .padding(15.dp)
     ) {
         MainScreenHeader(onCCPhoneClick = { vm.callCCClick() })
-        Spacer(modifier = Modifier.height(20.dp))
-        MainScreenNewFindElement(
-            state = mainScreenState,
-            onNewSearchClick = { vm.newSearchClick() },
-            modifier = Modifier.align(Alignment.End)
-        )
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(40.dp))
         MainScreenStateElement(_state = mainScreenState, onFindByNumOrTrackClick = { numOrTrack ->
             vm.findByOrderOrTrackNumClick(orderOrTrackNum = numOrTrack)
         }, onFindByPhoneClick = { numOrTrack, phoneNum ->
             vm.findByPhoneNumClick(orderOrTrackNum = numOrTrack, _phoneNum = phoneNum)
+        }, onAddressClick = { address ->
+            vm.addressClick(address)
         })
+        Spacer(modifier = Modifier.height(20.dp))
+        MainScreenNewFindElement(
+            state = mainScreenState,
+            onNewSearchClick = { vm.newSearchClick() },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -65,7 +71,12 @@ fun MainScreenNewFindElement(
     Log.e("AAA_AAA", "MainScreenNewFindElement")
 
     if (state.value !is FindByNumOrTrackMainScreenState) {
-        Button(onClick = onNewSearchClick, modifier = modifier) {
+        Button(
+            onClick = onNewSearchClick, modifier = modifier, colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(red = 77, green = 66, blue = 165, alpha = 255),
+                contentColor = Color.White
+            ), border = BorderStroke(1.dp, Color.Gray)
+        ) {
             Text(text = "Новый поиск")
         }
     }
@@ -96,7 +107,8 @@ fun MainScreenHeader(onCCPhoneClick: () -> Unit) {
 fun MainScreenStateElement(
     _state: State<MainScreenState?>,
     onFindByNumOrTrackClick: (numOrTrack: String) -> Unit,
-    onFindByPhoneClick: (numOrTrack: String, phoneNum: String) -> Unit
+    onFindByPhoneClick: (numOrTrack: String, phoneNum: String) -> Unit,
+    onAddressClick: (address: String) -> Unit
 ) {
     when (val state: MainScreenState = _state.value!!) {
         is FindByNumOrTrackMainScreenState -> {
@@ -105,14 +117,15 @@ fun MainScreenStateElement(
             })
         }
         is FindByPhoneMainScreenState -> {
-            FindByPhoneElement(
-                orderNumber = state.orderNum,
+            FindByPhoneElement(orderNumber = state.orderNum,
                 txtError = state.errorMsg,
                 onFindClick = {
                     onFindByPhoneClick(state.orderNum, it)
                 })
         }
         is WaitingMainScreenState -> WaitingElement()
-        is ResultMainScreenState -> {}
+        is ResultMainScreenState -> SearchResultElement(
+            orderData = state.orderData, onAddressClick = onAddressClick
+        )
     }
 }
