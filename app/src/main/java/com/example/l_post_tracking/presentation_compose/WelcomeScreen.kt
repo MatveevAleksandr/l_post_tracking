@@ -1,19 +1,19 @@
 package com.example.l_post_tracking.presentation_compose
 
-import androidx.compose.animation.AnimatedVisibility
+import android.util.Log
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,22 +22,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.l_post_tracking.R
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-@Preview(showBackground = true)
 @Composable
-fun WelcomeScreen() {
-    val visible = remember { mutableStateOf(true) }
-    val progress = remember { mutableStateOf(0.0f) }
-//    val scope = rememberCoroutineScope()
-//    scope.launch {
-//        while (progress.value < 1f) {
-//            progress.value += 0.1f
-//            delay(1000L)
-//        }
-//    }
+fun WelcomeScreen(visible: Boolean) {
 
+
+    val visible__ = remember { mutableStateOf(true) }
+
+    Log.e("AAA_AAA", "WelcomeScreen $visible")
     Column(
         modifier = Modifier
             .background(
@@ -52,10 +44,9 @@ fun WelcomeScreen() {
 
     ) {
         AnimatedVisibility(
-            visible = visible.value, enter = fadeIn(
-                initialAlpha = 0f, animationSpec = tween(durationMillis = 2900)
-            )
-
+            visibleState = remember { MutableTransitionState(true) },
+            enter = fadeIn(animationSpec = tween(durationMillis = 7000)),
+            exit = fadeOut(),
         ) {
             Image(
                 painter = painterResource(id = R.drawable.welcome_page_logo),
@@ -64,8 +55,10 @@ fun WelcomeScreen() {
             )
         }
         Spacer(modifier = Modifier.weight(1f))
+//        Button(onClick = { visible.value = !visible.value }){}
         LinearProgressIndicator(
-            progress = progress.value, modifier = Modifier.padding(bottom = 100.dp)
+            modifier = Modifier.padding(bottom = 100.dp),
+            color = Color(red = 0, green = 222, blue = 233)
         )
     }
 }
