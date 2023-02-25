@@ -2,25 +2,33 @@ package com.example.l_post_tracking.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.l_post_tracking.R
-import com.example.l_post_tracking.presentation_compose.MainActivityImpl
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.mutableStateOf
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome)
-        findViewById<ImageView>(R.id.welcomeLogo).startAnimation(
-            AnimationUtils.loadAnimation(
-                this, R.anim.fadein
-            )
-        )
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivityImpl::class.java))
-        }, 2900)
+        val scope = CoroutineScope(Dispatchers.Main)
+        val vv = mutableStateOf(false)
+        setContent {
+            WelcomeScreen()
+        }
+        scope.launch {
+            delay(2900L)
+            startActivity(Intent(applicationContext, MainActivityImpl::class.java))
+        }
+
+//        visible.value = false
+//        visible.value = true
+//        Покажем лого и запустим дальше
+//        scope.launch {
+//            delay(2900L)
+//            startActivity(Intent(applicationContext, MainActivityImpl::class.java))
+//        }
     }
 }

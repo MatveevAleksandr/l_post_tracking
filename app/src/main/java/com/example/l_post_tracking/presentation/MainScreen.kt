@@ -1,4 +1,4 @@
-package com.example.l_post_tracking.presentation_compose
+package com.example.l_post_tracking.presentation
 
 import android.util.Log
 import androidx.compose.foundation.Image

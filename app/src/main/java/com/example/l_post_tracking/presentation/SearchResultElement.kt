@@ -1,4 +1,4 @@
-package com.example.l_post_tracking.presentation_compose
+package com.example.l_post_tracking.presentation
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -17,7 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.l_post_tracking.R
