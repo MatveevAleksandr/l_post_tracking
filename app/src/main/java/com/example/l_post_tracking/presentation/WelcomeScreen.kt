@@ -22,7 +22,6 @@ import com.example.l_post_tracking.R
 @Composable
 fun WelcomeScreen() {
 
-
     val visible = remember { mutableStateOf(true) }
 
     Log.e("AAA_AAA", "WelcomeScreen $visible")

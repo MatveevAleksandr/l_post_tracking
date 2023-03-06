@@ -10,9 +10,10 @@ import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 import javax.inject.Inject
 
 /**
+ * TODO
  * темная тема
  * велком активити починить анимацию появления
- * MainScreen di
+ * убрать логи
  */
 
 class MainActivityImpl : ComponentActivity() {

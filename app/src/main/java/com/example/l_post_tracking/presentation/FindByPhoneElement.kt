@@ -1,14 +1,13 @@
 package com.example.l_post_tracking.presentation
 
 import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.Card
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +28,8 @@ fun FindByPhoneElement(orderNumber: String, txtError: String?, onFindClick: (Str
 
     val txtEditState = remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier.background(Color.White, shape = RoundedCornerShape(15.dp))
+    Card(
+        shape = RoundedCornerShape(20.dp), elevation = 20.dp
     ) {
         Column(
             horizontalAlignment = Alignment.Start, modifier = Modifier.padding(15.dp)
