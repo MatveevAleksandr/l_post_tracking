@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun FindByPhoneElement(orderNumber: String, txtError: String?, onFindClick: (String) -> Unit = {}) {
 
-    Log.e("AAA_AAA", "FindByPhoneElement")
+//    Log.e("AAA_AAA", "FindByPhoneElement")
 
     val txtEditState = remember { mutableStateOf("") }
 

@@ -13,7 +13,6 @@ import javax.inject.Inject
 /**
  * TODO
  * велком активити починить анимацию появления
- * убрать логи
  */
 
 class MainActivityImpl : ComponentActivity() {

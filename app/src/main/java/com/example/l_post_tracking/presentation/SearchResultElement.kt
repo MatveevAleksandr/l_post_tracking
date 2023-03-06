@@ -28,7 +28,7 @@ fun SearchResultElement(
     orderData: AppFindOrderResultDataModel, onAddressClick: (address: String) -> Unit
 ) {
 
-    Log.e("AAA_AAA", "SearchResultElement")
+//    Log.e("AAA_AAA", "SearchResultElement")
 
     Card(
         shape = RoundedCornerShape(20.dp), elevation = 20.dp

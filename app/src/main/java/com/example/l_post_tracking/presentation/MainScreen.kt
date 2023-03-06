@@ -27,7 +27,7 @@ fun MainScreen(
     vm: MainViewModel
 ) {
 
-    Log.e("AAA_AAA", "MainScreen")
+//    Log.e("AAA_AAA", "MainScreen")
 
     val mainScreenState = vm.getMainScreenLiveDataState().observeAsState()
     Column(
@@ -66,7 +66,7 @@ fun MainScreenNewFindElement(
     state: State<MainScreenState?>, onNewSearchClick: () -> Unit, modifier: Modifier
 ) {
 
-    Log.e("AAA_AAA", "MainScreenNewFindElement")
+//    Log.e("AAA_AAA", "MainScreenNewFindElement")
 
     if (state.value !is FindByNumOrTrackMainScreenState) {
         Button(
@@ -80,7 +80,7 @@ fun MainScreenNewFindElement(
 @Composable
 fun MainScreenHeader(onCCPhoneClick: () -> Unit) {
 
-    Log.e("AAA_AAA", "MainScreenHeader")
+//    Log.e("AAA_AAA", "MainScreenHeader")
 
     Row {
         Image(

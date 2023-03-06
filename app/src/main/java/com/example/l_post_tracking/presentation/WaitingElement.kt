@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun WaitingElement() {
-    Log.e("AAA_AAA", "WaitingElement")
+//    Log.e("AAA_AAA", "WaitingElement")
     Card(
         shape = RoundedCornerShape(20.dp), elevation = 20.dp
     ) {
