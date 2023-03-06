@@ -5,13 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.app.App
+import com.example.l_post_tracking.presentation.theme.TrackingTheme
 import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 import javax.inject.Inject
 
 /**
  * TODO
- * темная тема
  * велком активити починить анимацию появления
  * убрать логи
  */
@@ -28,7 +28,9 @@ class MainActivityImpl : ComponentActivity() {
         vm = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
 
         setContent {
-            MainScreen(vm)
+            TrackingTheme {
+                MainScreen(vm)
+            }
         }
     }
 }

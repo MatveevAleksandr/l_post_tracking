@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -33,8 +35,8 @@ fun MainScreen(
             .background(
                 brush = Brush.linearGradient(
                     listOf(
-                        Color(red = 91, green = 37, blue = 153),
-                        Color(red = 0, green = 222, blue = 233)
+                        MaterialTheme.colors.primary,
+                        MaterialTheme.colors.secondary
                     )
                 )
             )
@@ -70,7 +72,7 @@ fun MainScreenNewFindElement(
         Button(
             onClick = onNewSearchClick, modifier = modifier
         ) {
-            Text(text = "Новый поиск")
+            Text(text = "Новый поиск", color = if (isSystemInDarkTheme()) Color.LightGray else Color.White)
         }
     }
 }

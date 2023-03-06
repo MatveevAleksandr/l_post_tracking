@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
+import com.example.l_post_tracking.presentation.theme.TrackingTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -16,7 +17,9 @@ class WelcomeActivity : ComponentActivity() {
         val scope = CoroutineScope(Dispatchers.Main)
         val vv = mutableStateOf(false)
         setContent {
-            WelcomeScreen()
+            TrackingTheme {
+                WelcomeScreen()
+            }
         }
         scope.launch {
             delay(2900L)

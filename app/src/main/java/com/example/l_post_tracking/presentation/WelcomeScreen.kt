@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,8 +31,8 @@ fun WelcomeScreen() {
             .background(
                 brush = Brush.linearGradient(
                     listOf(
-                        Color(red = 91, green = 37, blue = 153),
-                        Color(red = 0, green = 222, blue = 233)
+                        MaterialTheme.colors.primary,
+                        MaterialTheme.colors.secondary
                     )
                 )
             )
@@ -53,7 +54,7 @@ fun WelcomeScreen() {
 //        Button(onClick = { visible.value = !visible.value }){}
         LinearProgressIndicator(
             modifier = Modifier.padding(bottom = 100.dp),
-            color = Color(red = 0, green = 222, blue = 233)
+            MaterialTheme.colors.secondary
         )
     }
 }

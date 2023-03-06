@@ -1,14 +1,12 @@
 package com.example.l_post_tracking.presentation
 
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,12 +48,12 @@ fun FindByNumOrTrackElement(
                     .padding(top = 10.dp),
                 placeholder = { Text(text = "Номер или трек номер отправления") })
             if (!txtError.isNullOrEmpty()) {
-                Text(text = txtError, color = Color(red = 174, green = 3, blue = 3))
+                Text(text = txtError, color = MaterialTheme.colors.error)
             }
             Button(
                 onClick = { onFindClick(txtEditState.value) }, modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Найти")
+                Text(text = "Найти", color = if (isSystemInDarkTheme()) Color.LightGray else Color.White)
             }
         }
     }
