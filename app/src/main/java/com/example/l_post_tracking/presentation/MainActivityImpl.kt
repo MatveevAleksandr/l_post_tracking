@@ -10,11 +10,6 @@ import com.example.l_post_tracking.viewmodel.MainViewModel
 import com.example.l_post_tracking.viewmodel.MainViewModelFactory
 import javax.inject.Inject
 
-/**
- * TODO
- * велком активити починить анимацию появления
- */
-
 class MainActivityImpl : ComponentActivity() {
     @Inject
     lateinit var vmFactory: MainViewModelFactory
