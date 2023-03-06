@@ -24,6 +24,7 @@ class WelcomeActivity : ComponentActivity() {
         scope.launch {
             delay(2900L)
             startActivity(Intent(applicationContext, MainActivityImpl::class.java))
+            finish()
         }
 
 //        visible.value = false
