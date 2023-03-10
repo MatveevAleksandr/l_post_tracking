@@ -9,6 +9,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,7 +72,7 @@ fun SearchResultElement(
 fun StatusRow(status: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            painter = painterResource(id = R.drawable.state),
+            imageVector = Icons.Outlined.CheckCircle,
             contentDescription = null,
             modifier = Modifier.size(
                 ICON_SIDE_SIZE
@@ -85,7 +89,7 @@ fun StatusRow(status: String) {
 fun DateDeliveryRow(deliveryDate: String?, timeFrom: String?, timeTo: String?) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            painter = painterResource(id = R.drawable.delivery_date),
+            imageVector = Icons.Default.DateRange,
             contentDescription = null,
             modifier = Modifier.size(
                 ICON_SIDE_SIZE
@@ -115,7 +119,7 @@ fun AddressRow(address: String, onAddressClick: (address: String) -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.address),
+            imageVector = Icons.Outlined.Place,
             contentDescription = null,
             modifier = Modifier.size(
                 ICON_SIDE_SIZE
