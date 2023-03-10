@@ -8,13 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val lightColorPallet = lightColors(
-    error = Color(red = 174, green = 3, blue = 3),
+    error = Color(0xFFAE0303),
+    onPrimary = Color.White
 )
 
 private val darkColorPallet = darkColors(
-    primary = Color(red = 73, green = 70, blue = 164, alpha = 255),
+    primary = Color(0xFF4946A4),
     secondary = Color(0xFF26A69A),
-    error = Color(red = 148, green = 53, blue = 53, alpha = 255)
+    error = Color(0xFF943535),
+    onPrimary = Color.LightGray
 )
 
 @Composable

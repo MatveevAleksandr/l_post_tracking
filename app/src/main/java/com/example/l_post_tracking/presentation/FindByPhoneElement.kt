@@ -1,7 +1,5 @@
 package com.example.l_post_tracking.presentation
 
-import android.util.Log
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -53,7 +51,7 @@ fun FindByPhoneElement(orderNumber: String, txtError: String?, onFindClick: (Str
             Button(
                 onClick = { onFindClick(txtEditState.value) }, modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Найти", color = if (isSystemInDarkTheme()) Color.LightGray else Color.White)
+                Text(text = "Найти")
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.l_post_tracking.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.ViewModelProvider
 import com.example.l_post_tracking.app.App
 import com.example.l_post_tracking.presentation.theme.TrackingTheme
@@ -22,7 +23,7 @@ class MainActivityImpl : ComponentActivity() {
         vm = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
 
         setContent {
-            TrackingTheme {
+            TrackingTheme(isDarkTheme = isSystemInDarkTheme()) {
                 MainScreen(vm)
             }
         }
