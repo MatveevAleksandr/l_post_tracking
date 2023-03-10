@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -138,7 +139,7 @@ fun AddressRow(address: String, onAddressClick: (address: String) -> Unit) {
 fun PaymentTypeRow(canPayCash: Boolean, canPayCard: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            painter = painterResource(id = R.drawable.payment_mode),
+            imageVector = Icons.Outlined.ShoppingCart,
             contentDescription = null,
             modifier = Modifier.size(
                 ICON_SIDE_SIZE
